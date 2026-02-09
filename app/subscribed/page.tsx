@@ -9,14 +9,14 @@ import mylesWellbeingImage from "@/assets/images/myles-wellbeing/screenshot.jpg"
 export default async function Home() {
   const [
     { Content },
-    { metadata: lineAvatars },
+    { metadata: whatWouldYouLookLike },
     { metadata: mylesWellbeing },
     { metadata: jotboard },
-    { metadata: poemGenerator },
+    { metadata: emojiFamily },
     articles,
   ] = await Promise.all([
     loadMarkdown("/subscribed"),
-    loadMarkdown("/projects/line-avatars"),
+    loadMarkdown("/projects/what-would-you-look-like"),
     loadMarkdown("/projects/myles-wellbeing"),
     loadMarkdown("/projects/jotboard"),
     loadMarkdown("/projects/poem-generator"),
@@ -47,22 +47,22 @@ export default async function Home() {
           </div>
         </Project>
         <Project
-          project={lineAvatars}
-          className="order-2 sm:col-span-6 bg-teal-300 dark:bg-teal-700"
+          project={whatWouldYouLookLike}
+          className="order-2 sm:col-span-6 bg-pink-300 dark:bg-pink-700"
         />
         <Project
           project={jotboard}
           className="order-2 sm:col-span-6 bg-lime-400 dark:bg-lime-700"
         />
         <Project
-          project={poemGenerator}
-          className="order-2 sm:col-span-6 bg-red-300 dark:bg-red-700"
+          project={emojiFamily}
+          className="order-2 sm:col-span-6 bg-sky-300 dark:bg-sky-700"
         />
         {latestArticles.map((article) => (
           <Article
             key={article.metadata.title}
             metadata={article.metadata}
-            className="order-2 bg-teal-300 dark:bg-emerald-700 saturate-50 dark:saturate-100"
+            className="order-2"
           />
         ))}
       </BentoGrid>

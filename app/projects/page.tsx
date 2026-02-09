@@ -16,7 +16,7 @@ export default async function ProjectsPage() {
   const [
     ,
     // Myles Wellbeing is first because it's the most recent project
-    { metadata: lineAvatars },
+    { metadata: whatWouldYouLookLike },
     { metadata: jotboard },
     { metadata: emojiFamily },
     { metadata: poemGenerator },
@@ -27,12 +27,12 @@ export default async function ProjectsPage() {
     <main>
       <BentoGrid>
         <Project
-          project={jotboard}
-          className="sm:col-span-6 bg-lime-400 dark:bg-lime-700"
+          project={whatWouldYouLookLike}
+          className="sm:col-span-6 bg-pink-300 dark:bg-pink-700"
         />
         <Project
-          project={lineAvatars}
-          className="sm:col-span-6 bg-teal-300 dark:bg-teal-700"
+          project={jotboard}
+          className="sm:col-span-6 bg-lime-400 dark:bg-lime-700"
         />
         <Project
           project={emojiFamily}

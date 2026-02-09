@@ -15,17 +15,17 @@ import { Badge } from "@/components/Badge";
 export default async function Home() {
   const [
     { Content },
-    { metadata: emojiFamily },
     { metadata: mylesWellbeing },
+    { metadata: whatWouldYouLookLike },
     { metadata: jotboard },
-    { metadata: poemGenerator },
+    { metadata: emojiFamily },
     articles,
   ] = await Promise.all([
     loadMarkdown("/index"),
-    loadMarkdown("/projects/emoji-family"),
     loadMarkdown("/projects/myles-wellbeing"),
+    loadMarkdown("/projects/what-would-you-look-like"),
     loadMarkdown("/projects/jotboard"),
-    loadMarkdown("/projects/poem-generator"),
+    loadMarkdown("/projects/emoji-family"),
     loadMarkdownDirectory("/blog"),
   ]);
 
@@ -82,6 +82,10 @@ export default async function Home() {
           <Badge>Acquired!</Badge>
         </Project>
         <Project
+          project={whatWouldYouLookLike}
+          className="order-2 sm:col-span-6 bg-pink-300 dark:bg-pink-700"
+        />
+        <Project
           project={jotboard}
           className="order-2 sm:col-span-6 bg-lime-400 dark:bg-lime-700"
         />
@@ -89,13 +93,6 @@ export default async function Home() {
           project={emojiFamily}
           className="order-2 sm:col-span-6 bg-sky-300 dark:bg-sky-700"
         />
-        <Project
-          project={poemGenerator}
-          className="order-2 sm:col-span-6 bg-red-300 dark:bg-red-700"
-        >
-          <Badge>Acquired!</Badge>
-          <div className="-mb-12" />
-        </Project>
         <div className="order-2 col-span-full flex flex-wrap justify-stretch text-center -m-1">
           <BentoItem className="order-2 md:order-1 m-1 flex-1 relative items-center bg-blue-300 dark:bg-blue-500">
             <Heading2 link className="text-3xl/tight sm:text-4xl/tight">
