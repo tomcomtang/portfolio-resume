@@ -3,7 +3,7 @@ import { BentoItem } from "@/components/BentoItem";
 import { loadMarkdown, loadMarkdownDirectory } from "@/utilities/markdown";
 import { Heading2, Paragraph } from "@/mdx-components";
 import Link from "next/link";
-import { Headshots } from "@/components/Headshots";
+import { Headshots3x3 } from "@/components/Headshots3x3";
 import { Article } from "@/components/Article";
 import { DynamicCards } from "@/components/DynamicCards";
 import { Suspense } from "react";
@@ -36,7 +36,7 @@ export default async function Home() {
       <BentoGrid>
         <BentoItem className="order-1 sm:order-2 sm:col-span-6 md:col-span-4 overflow-hidden bg-blue-200 sm:bg-blue-300 dark:bg-blue-900 max-sm:before:opacity-50">
           <div className="relative max-sm:overflow-hidden">
-            <Headshots />
+            <Headshots3x3 />
             <div className="sm:hidden absolute inset-0 bg-gradient-to-b from-transparent from-60% to-blue-200 sm:to-blue-300 dark:to-blue-900" />
           </div>
           <div className="mt-8 text-center sm:hidden">

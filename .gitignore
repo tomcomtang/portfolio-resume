@@ -27,8 +27,14 @@ yarn-error.log*
 # local env files
 .env*.local
 
+# local scratch / generated artifacts
+/tmp
+
 # vercel
 .vercel
+
+# local media sources (do not commit)
+/assets/people.mp4
 
 # typescript
 *.tsbuildinfo
