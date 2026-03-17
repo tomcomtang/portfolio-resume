@@ -2,10 +2,6 @@ import { twMerge } from "tailwind-merge";
 
 const { OPENWEATHER_API_KEY } = process.env;
 
-if (OPENWEATHER_API_KEY === undefined) {
-  throw new Error("Missing OpenWeather API key");
-}
-
 const aliases: Record<string, string> = {
   Thunderstorm: "Stormy",
   Rain: "Rainy",
@@ -40,17 +36,62 @@ const backgrounds: Record<string, string> = {
   "50n": "from-gray-600 to-gray-800",
 };
 
-export async function getWeather() {
-  const response = await fetch(
-    `https://api.openweathermap.org/data/2.5/weather?lat=53.39&lon=2.60&appid=${OPENWEATHER_API_KEY}`,
-    {
-      next: {
-        revalidate: 3600,
-      },
-    }
-  ).then((response) => response.json());
+type WeatherResult = {
+  description: string;
+  icon: string;
+  background: string;
+  location: string;
+};
 
-  const weather = response.weather[0];
+function unavailable(): WeatherResult {
+  return {
+    description: "Weather unavailable",
+    icon: "/openweather/04d@4x.png",
+    background: twMerge(
+      "bg-gradient-to-b before:opacity-25 dark:before:opacity-25",
+      "from-gray-400 to-gray-200 dark:from-gray-700 dark:to-gray-800",
+      "text-white"
+    ),
+    location: "Location unavailable",
+  };
+}
+
+export async function getWeatherByCoords(
+  lat: number,
+  lon: number,
+  opts?: { cache?: RequestCache }
+): Promise<WeatherResult> {
+  if (!OPENWEATHER_API_KEY) return unavailable();
+
+  const isProd = process.env.NODE_ENV === "production";
+  const response = await fetch(
+    `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${OPENWEATHER_API_KEY}`,
+    opts?.cache
+      ? { cache: opts.cache }
+      : isProd
+        ? { next: { revalidate: 3600 } }
+        : { cache: "no-store" }
+  );
+
+  if (!response.ok) {
+    return unavailable();
+  }
+
+  const data = (await response.json()) as {
+    weather?: { main: string; icon: string }[];
+    name?: string;
+    sys?: { country?: string };
+  };
+
+  const weather = data.weather?.[0];
+  if (!weather?.main || !weather?.icon) {
+    return unavailable();
+  }
+
+  const city = data.name?.trim();
+  const country = data.sys?.country?.trim();
+  const location =
+    city && country ? `${city}, ${country}` : city || country || "Location unavailable";
 
   return {
     description: aliases[weather.main] ?? weather.main,
@@ -60,5 +101,11 @@ export async function getWeather() {
       weather.icon.endsWith("n") && "text-white",
       backgrounds[weather.icon]
     ),
+    location,
   };
+}
+
+export async function getWeather() {
+  // Default (used when no user coords available)
+  return await getWeatherByCoords(53.39, 2.6);
 }

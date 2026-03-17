@@ -29,7 +29,19 @@ async function getAccessToken() {
     },
   });
 
-  const { access_token: accessToken } = await response.json();
+  if (!response.ok) {
+    const text = await response.text().catch(() => "");
+    throw new Error(
+      `Spotify token request failed (${response.status}): ${text || response.statusText}`
+    );
+  }
+
+  const { access_token: accessToken } = (await response.json()) as {
+    access_token?: string;
+  };
+  if (!accessToken) {
+    throw new Error("Spotify token response missing access_token");
+  }
   return accessToken;
 }
 
@@ -55,22 +67,52 @@ type Track = {
   played_at: string;
 };
 
-export async function getRecentlyPlayed() {
-  const accessToken = await getAccessToken();
+function getRecentlyPlayedPlaceholder() {
+  return {
+    name: "My lifestyle",
+    album: "",
+    albumImage: {
+      url: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
+      height: 1,
+      width: 1,
+    },
+    artist: "",
+    duration: 0,
+    playedAt: "",
+    url: "https://open.spotify.com",
+  };
+}
 
-  const response = await fetch(
-    "https://api.spotify.com/v1/me/player/recently-played",
-    {
+export async function getRecentlyPlayed() {
+  let accessToken: string;
+  try {
+    accessToken = await getAccessToken();
+  } catch {
+    return getRecentlyPlayedPlaceholder();
+  }
+
+  let response: Response;
+  try {
+    response = await fetch("https://api.spotify.com/v1/me/player/recently-played", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
       next: {
         revalidate: 60,
       },
-    }
-  ).then((response) => response.json());
+    });
+  } catch {
+    return getRecentlyPlayedPlaceholder();
+  }
 
-  const [mostRecent]: Track[] = response.items;
+  if (!response.ok) return getRecentlyPlayedPlaceholder();
+
+  const data = (await response.json()) as { items?: Track[] };
+  const mostRecent = data.items?.[0];
+
+  if (!mostRecent?.track?.album?.images?.length) {
+    return getRecentlyPlayedPlaceholder();
+  }
 
   const albumImage = mostRecent.track.album.images.reduce((smallest, image) => {
     return image.width < smallest.width ? image : smallest;

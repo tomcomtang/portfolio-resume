@@ -1,32 +1,40 @@
-import { exists, firestore, pageConverter } from "@/utilities/firebaseNode";
-import { FieldValue } from "firebase-admin/firestore";
-
 type Params = {
   params: {
     path?: string[];
   };
 };
 
-async function getPageByPath(path: string) {
-  return await firestore
-    .collection("pages")
-    .withConverter(pageConverter)
-    .doc(encodeURIComponent(path))
-    .get();
-}
-
 const NEW_PAGE = {
   views: 0,
 };
+
+async function getFirebase() {
+  try {
+    const { exists, firestore, pageConverter } = await import(
+      "@/utilities/firebaseNode"
+    );
+    const { FieldValue } = await import("firebase-admin/firestore");
+    return { exists, firestore, pageConverter, FieldValue };
+  } catch {
+    return null;
+  }
+}
 
 export async function GET(
   request: Request,
   { params: { path: segments = [] } }: Params
 ) {
   const path = "/" + segments.join("/");
-  const page = await getPageByPath(path);
+  const firebase = await getFirebase();
+  if (!firebase) return Response.json(NEW_PAGE);
 
-  if (exists(page)) {
+  const page = await firebase.firestore
+    .collection("pages")
+    .withConverter(firebase.pageConverter)
+    .doc(encodeURIComponent(path))
+    .get();
+
+  if (firebase.exists(page)) {
     return Response.json(page.data());
   }
 
@@ -38,11 +46,18 @@ export async function POST(
   { params: { path: segments = [] } }: Params
 ) {
   const path = "/" + segments.join("/");
-  const page = await getPageByPath(path);
+  const firebase = await getFirebase();
+  if (!firebase) return Response.json(NEW_PAGE);
 
-  if (exists(page)) {
+  const page = await firebase.firestore
+    .collection("pages")
+    .withConverter(firebase.pageConverter)
+    .doc(encodeURIComponent(path))
+    .get();
+
+  if (firebase.exists(page)) {
     await page.ref.update({
-      views: FieldValue.increment(1),
+      views: firebase.FieldValue.increment(1),
     });
 
     return Response.json(page.data());

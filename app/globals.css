@@ -234,3 +234,73 @@ ul[class] ul[class] {
   animation-delay: calc(-1s * var(--progress));
   background-color: hsl(var(--hue) var(--saturation) var(--lightness));
 }
+
+@keyframes mini-eq {
+  0% {
+    transform: scaleY(0.25);
+    opacity: 0.75;
+  }
+  35% {
+    transform: scaleY(1);
+    opacity: 1;
+  }
+  70% {
+    transform: scaleY(0.4);
+    opacity: 0.85;
+  }
+  100% {
+    transform: scaleY(0.25);
+    opacity: 0.75;
+  }
+}
+
+.mini-eq {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 16px;
+}
+
+.mini-eq__bar {
+  width: 3px;
+  height: 100%;
+  transform-origin: bottom;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.85);
+  animation: mini-eq 900ms ease-in-out infinite;
+  animation-delay: var(--mini-eq-delay, 0ms);
+}
+
+.mini-eq--paused .mini-eq__bar {
+  animation-play-state: paused;
+  transform: scaleY(var(--mini-eq-static, 0.85));
+  opacity: 0.75;
+}
+
+/* Use equalizer bars inside a progress track */
+.mini-eq--track {
+  height: 100%;
+  width: 100%;
+  gap: 2px;
+  justify-content: space-between;
+}
+
+.mini-eq--track .mini-eq__bar {
+  width: 3px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.mini-eq__fill {
+  position: absolute;
+  inset: 0;
+  width: var(--mini-eq-progress, 0%);
+  background: rgba(255, 255, 255, 0.55);
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mini-eq__bar {
+    animation: none;
+  }
+}
