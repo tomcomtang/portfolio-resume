@@ -20,6 +20,7 @@ type ProfileProjectCardProperties = {
 
 const COPY = {
   en: {
+    more: "More",
     "tencent-console": {
       title: "Cloud Config",
       description:
@@ -40,6 +41,7 @@ const COPY = {
     },
   },
   zh: {
+    more: "查看更多",
     "tencent-console": {
       title: "腾讯云控制台配置平台",
       description:
@@ -129,6 +131,11 @@ export function ProfileProjectCard({
               {COPY.zh[projectKey].description}
             </span>
           </span>
+        </Paragraph>
+        <Paragraph className="mt-4">
+          <Link href="/projects" className="underline underline-offset-4">
+            {showZh ? COPY.zh.more : COPY.en.more}
+          </Link>
         </Paragraph>
       </div>
     </BentoItem>

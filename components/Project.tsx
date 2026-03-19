@@ -24,7 +24,7 @@ export function Project({
           <span className="absolute inset-0" />
         </Link>
       </Heading2>
-      <Paragraph>{project.description}</Paragraph>
+      <Paragraph className="mb-0 h-24 overflow-hidden">{project.description}</Paragraph>
     </BentoItem>
   );
 }
