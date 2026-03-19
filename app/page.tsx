@@ -5,12 +5,14 @@ import { Heading2, Paragraph } from "@/mdx-components";
 import Link from "next/link";
 import { Headshots3x3 } from "@/components/Headshots3x3";
 import { Article } from "@/components/Article";
-import { DynamicCards } from "@/components/DynamicCards";
 import { Suspense } from "react";
 import Image from "next/image";
 import { Project } from "@/components/Project";
 import mylesWellbeingImage from "@/assets/images/myles-wellbeing/screenshot.jpg";
 import { Badge } from "@/components/Badge";
+import { WeatherCard } from "@/components/WeatherCard";
+import { ContactsCard } from "@/components/ContactsCard";
+import { MusicCard } from "@/components/MusicCard";
 
 export default async function Home() {
   const [
@@ -56,15 +58,12 @@ export default async function Home() {
             </>
           }
         >
-          <DynamicCards />
+          <>
+            <WeatherCard />
+            <ContactsCard />
+          </>
         </Suspense>
-        <BentoItem className="order-2 hidden md:flex md:col-span-4 bg-fuchsia-200 dark:bg-fuchsia-900">
-          <div />
-          <Heading2 className="-skew-y-6 origin-left">
-            What&rsquo;s up?
-          </Heading2>
-          <Paragraph>The opposite of down.</Paragraph>
-        </BentoItem>
+        <MusicCard />
         <Project
           project={mylesWellbeing}
           className="order-2 relative sm:col-span-6 sm:row-span-3 bg-gradient-to-b from-yellow-800 to-20% to-orange-300 dark:to-amber-700 overflow-hidden"

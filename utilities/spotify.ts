@@ -67,8 +67,24 @@ type Track = {
   played_at: string;
 };
 
+export type RecentlyPlayedResult = {
+  source: "spotify" | "placeholder";
+  name: string;
+  album: string;
+  albumImage: {
+    url: string;
+    height: number;
+    width: number;
+  };
+  artist: string;
+  duration: number;
+  playedAt: string;
+  url: string;
+};
+
 function getRecentlyPlayedPlaceholder() {
   return {
+    source: "placeholder",
     name: "My lifestyle",
     album: "",
     albumImage: {
@@ -97,9 +113,9 @@ export async function getRecentlyPlayed() {
       headers: {
         Authorization: `Bearer ${accessToken}`,
       },
-      next: {
-        revalidate: 60,
-      },
+      // Disable caching so UI doesn't keep old successful data
+      // when Spotify turns into 403 again (e.g. non-premium).
+      cache: "no-store",
     });
   } catch {
     return getRecentlyPlayedPlaceholder();
@@ -119,6 +135,7 @@ export async function getRecentlyPlayed() {
   });
 
   return {
+    source: "spotify",
     name: mostRecent.track.name,
     album: mostRecent.track.album.name,
     albumImage,

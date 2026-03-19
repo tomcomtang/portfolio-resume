@@ -9,8 +9,7 @@ import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
 
 export async function DynamicCards() {
   const recentlyPlayedSong = await getRecentlyPlayed();
-  const isSpotifyPlaceholder =
-    recentlyPlayedSong.artist === "" && recentlyPlayedSong.album === "";
+  const isSpotifyPlaceholder = recentlyPlayedSong.source === "placeholder";
 
   return (
     <>
