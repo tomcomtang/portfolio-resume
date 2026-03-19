@@ -88,9 +88,9 @@ function getRecentlyPlayedPlaceholder() {
     name: "My Life's Theme Song",
     album: "",
     albumImage: {
-      url: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",
-      height: 1,
-      width: 1,
+      url: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%23807060'/%3E%3Cstop offset='50%25' stop-color='%23706050'/%3E%3Cstop offset='100%25' stop-color='%23605040'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' fill='url(%23g)'/%3E%3C/svg%3E",
+      height: 64,
+      width: 64,
     },
     artist: "",
     duration: 0,
