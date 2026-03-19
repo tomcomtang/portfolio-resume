@@ -1,34 +1,20 @@
 import { BentoGrid } from "@/components/BentoGrid";
 import { BentoItem } from "@/components/BentoItem";
-import { loadMarkdown, loadMarkdownDirectory } from "@/utilities/markdown";
+import { loadMarkdownDirectory } from "@/utilities/markdown";
 import { Heading2, Paragraph } from "@/mdx-components";
 import Link from "next/link";
 import { Headshots3x3 } from "@/components/Headshots3x3";
 import { Article } from "@/components/Article";
 import { Suspense } from "react";
-import { Project } from "@/components/Project";
-import { Badge } from "@/components/Badge";
 import { WeatherCard } from "@/components/WeatherCard";
 import { ContactsCard } from "@/components/ContactsCard";
 import { MusicCard } from "@/components/MusicCard";
-import { TencentMylesCarousel } from "@/components/TencentMylesCarousel";
+import { IntroBlurb } from "@/components/IntroBlurb";
+import { ExperienceCard } from "@/components/ExperienceCard";
+import { ProfileProjectCard } from "@/components/ProfileProjectCard";
 
 export default async function Home() {
-  const [
-    { Content },
-    { metadata: mylesWellbeing },
-    { metadata: whatWouldYouLookLike },
-    { metadata: jotboard },
-    { metadata: emojiFamily },
-    articles,
-  ] = await Promise.all([
-    loadMarkdown("/index"),
-    loadMarkdown("/projects/myles-wellbeing"),
-    loadMarkdown("/projects/what-would-you-look-like"),
-    loadMarkdown("/projects/jotboard"),
-    loadMarkdown("/projects/emoji-family"),
-    loadMarkdownDirectory("/blog"),
-  ]);
+  const [articles] = await Promise.all([loadMarkdownDirectory("/blog")]);
 
   const latestArticles = articles.slice(0, 3);
   return (
@@ -40,12 +26,12 @@ export default async function Home() {
             <div className="sm:hidden absolute inset-0 bg-gradient-to-b from-transparent from-60% to-blue-200 sm:to-blue-300 dark:to-blue-900" />
           </div>
           <div className="mt-8 text-center sm:hidden">
-            <Content />
+            <IntroBlurb />
           </div>
         </BentoItem>
         <BentoItem className="hidden sm:flex order-2 sm:order-1 sm:col-span-6 md:col-span-8 bg-blue-100 dark:bg-blue-950 before:opacity-50">
           <div className="max-w-2xl pt-8">
-            <Content />
+            <IntroBlurb />
           </div>
         </BentoItem>
         <Suspense
@@ -62,24 +48,17 @@ export default async function Home() {
           </>
         </Suspense>
         <MusicCard />
-        <Project
-          project={mylesWellbeing}
-          className="order-2 relative sm:col-span-6 sm:row-span-3 bg-gradient-to-b from-yellow-800 to-20% to-orange-300 dark:to-amber-700 overflow-hidden"
-        >
-          <TencentMylesCarousel />
-          <div className="h-52 sm:h-[48%] sm:min-h-44 mb-8" />
-          <Badge>Acquired!</Badge>
-        </Project>
-        <Project
-          project={whatWouldYouLookLike}
+        <ExperienceCard />
+        <ProfileProjectCard
+          projectKey="tencent-console"
           className="order-2 sm:col-span-6 bg-pink-300 dark:bg-pink-700"
         />
-        <Project
-          project={jotboard}
+        <ProfileProjectCard
+          projectKey="timmerse"
           className="order-2 sm:col-span-6 bg-lime-400 dark:bg-lime-700"
         />
-        <Project
-          project={emojiFamily}
+        <ProfileProjectCard
+          projectKey="edgeone-pages"
           className="order-2 sm:col-span-6 bg-sky-300 dark:bg-sky-700"
         />
         <div className="order-2 col-span-full flex flex-wrap justify-stretch text-center -m-1">

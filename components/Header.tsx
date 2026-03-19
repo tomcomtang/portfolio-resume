@@ -5,8 +5,49 @@ import { Container } from "./Container";
 import Link from "next/link";
 import { MoonIcon, SunIcon } from "@heroicons/react/24/solid";
 import { useCallback, useEffect, useState } from "react";
+import { useLanguage } from "@/components/useLanguage";
 
 type HeaderProperties = JSX.IntrinsicElements["header"];
+
+function FadeText({
+  en,
+  zh,
+  language,
+  className,
+}: {
+  en: string;
+  zh: string;
+  language: "en" | "zh";
+  className?: string;
+}) {
+  const showZh = language === "zh";
+  return (
+    <span className={twMerge("relative inline-grid align-middle", className)}>
+      <span className="invisible col-start-1 row-start-1" aria-hidden="true">
+        {en}
+      </span>
+      <span className="invisible col-start-1 row-start-1" aria-hidden="true">
+        {zh}
+      </span>
+      <span
+        className={twMerge(
+          "col-start-1 row-start-1 transition-opacity duration-300 ease-out",
+          showZh ? "opacity-0" : "opacity-100"
+        )}
+      >
+        {en}
+      </span>
+      <span
+        className={twMerge(
+          "col-start-1 row-start-1 transition-opacity duration-300 ease-out",
+          showZh ? "opacity-100" : "opacity-0"
+        )}
+      >
+        {zh}
+      </span>
+    </span>
+  );
+}
 
 function HeaderLink({
   className,
@@ -73,7 +114,24 @@ function useTheme() {
 
 export function Header({ className, ...properties }: HeaderProperties) {
   const [theme, setTheme] = useTheme();
+  const [language, setLanguage] = useLanguage();
   const [switching, setSwitching] = useState(false);
+  const copy = {
+    en: {
+      home: "Home",
+      blog: "Blog",
+      projects: "Projects",
+      lang: "Lang",
+      theme: "Theme",
+    },
+    zh: {
+      home: "首页",
+      blog: "博客",
+      projects: "项目",
+      lang: "语言",
+      theme: "主题",
+    },
+  } as const;
 
   const toggleTheme = useCallback(() => {
     setSwitching(true);
@@ -89,6 +147,10 @@ export function Header({ className, ...properties }: HeaderProperties) {
     window.scrollTo(0, 0);
   };
 
+  const toggleLanguage = () => {
+    setLanguage(language === "en" ? "zh" : "en");
+  };
+
   return (
     <header
       className={twMerge("relative", className)}
@@ -97,13 +159,50 @@ export function Header({ className, ...properties }: HeaderProperties) {
     >
       <Container className="relative bg-radial-gradient-b from-slate-800 to-transparent py-8 px-6 sm:px-8 md:px-10 lg:px-12 flex overflow-x-auto hide-scrollbar justify-between">
         <div className="flex space-x-2 mr-2 sm:space-x-6 sm:mr-6 -ml-2">
-          <HeaderLink href="/">Home</HeaderLink>
-          <HeaderLink href="/blog">Blog</HeaderLink>
-          <HeaderLink href="/projects">Projects</HeaderLink>
+          <HeaderLink href="/">
+            <FadeText en={copy.en.home} zh={copy.zh.home} language={language} />
+          </HeaderLink>
+          <HeaderLink href="/blog">
+            <FadeText en={copy.en.blog} zh={copy.zh.blog} language={language} />
+          </HeaderLink>
+          <HeaderLink href="/projects">
+            <FadeText
+              en={copy.en.projects}
+              zh={copy.zh.projects}
+              language={language}
+            />
+          </HeaderLink>
         </div>
         <div className="flex space-x-2 sm:space-x-6 -mr-2">
+          <HeaderButton onClick={toggleLanguage}>
+            <FadeText
+              en={copy.en.lang}
+              zh={copy.zh.lang}
+              language={language}
+              className="mr-2"
+            />
+            <span
+              aria-live="polite"
+              className="relative inline-flex h-5 w-9 overflow-hidden align-middle"
+            >
+              <span
+                className={twMerge(
+                  "absolute left-0 top-0 flex w-full flex-col text-left transition-transform duration-300 ease-in-out",
+                  language === "en" ? "translate-y-0" : "-translate-y-1/2"
+                )}
+              >
+                <span className="h-5 leading-5">EN</span>
+                <span className="h-5 leading-5">中文</span>
+              </span>
+            </span>
+          </HeaderButton>
           <HeaderButton onClick={toggleTheme}>
-            <span className="mr-2">Theme</span>
+            <FadeText
+              en={copy.en.theme}
+              zh={copy.zh.theme}
+              language={language}
+              className="mr-2"
+            />
             <MoonIcon
               className={twMerge(
                 "hidden dark:inline w-4 h-4 transition-transform origin-bottom",

@@ -1,9 +1,12 @@
+"use client";
+
 import { EnvelopeIcon, PhoneIcon } from "@heroicons/react/24/outline";
 import { BentoItem } from "@/components/BentoItem";
 import { Heading2 } from "@/mdx-components";
 import { WeChatQRButton } from "@/components/WeChatQRButton";
 import Image from "next/image";
 import tencentImage from "@/assets/tencent-img/tencent-avatar.jpg";
+import { useLanguage } from "@/components/useLanguage";
 
 function QQIcon(properties: JSX.IntrinsicElements["svg"]) {
   return (
@@ -22,6 +25,20 @@ function QQIcon(properties: JSX.IntrinsicElements["svg"]) {
 }
 
 export function ContactsCard() {
+  const [language] = useLanguage();
+  const copy = {
+    en: {
+      title: "Let's connect",
+      phone: "Phone",
+      email: "Email",
+    },
+    zh: {
+      title: "联系我",
+      phone: "电话",
+      email: "邮箱",
+    },
+  } as const;
+
   return (
     <BentoItem className="h-72 order-2 col-span-6 md:col-span-4 bg-fuchsia-200 dark:bg-fuchsia-900 overflow-hidden">
       {/* Top half image layer: pinned to top, fades smoothly into card color */}
@@ -38,7 +55,7 @@ export function ContactsCard() {
       </div>
 
       <div className="relative z-10">
-        <Heading2 className="-skew-y-6 origin-left">Let&apos;s connect</Heading2>
+        <Heading2 className="-skew-y-6 origin-left">{copy[language].title}</Heading2>
         <div className="mt-6 flex flex-wrap items-center gap-4">
           <a
             href="https://wpa.qq.com/msgrd?v=3&uin=364786053&site=qq&menu=yes"
@@ -54,8 +71,8 @@ export function ContactsCard() {
           <a
             href="tel:18813676461"
             className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
-            aria-label="Phone: 18813676461"
-            title="Phone: 18813676461"
+            aria-label={`${copy[language].phone}: 18813676461`}
+            title={`${copy[language].phone}: 18813676461`}
           >
             <PhoneIcon className="h-6 w-6" aria-hidden="true" />
           </a>
@@ -63,8 +80,8 @@ export function ContactsCard() {
           <a
             href="mailto:364786053@qq.com"
             className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
-            aria-label="Email: 364786053@qq.com"
-            title="Email: 364786053@qq.com"
+            aria-label={`${copy[language].email}: 364786053@qq.com`}
+            title={`${copy[language].email}: 364786053@qq.com`}
           >
             <EnvelopeIcon className="h-6 w-6" aria-hidden="true" />
           </a>
