@@ -6,21 +6,12 @@ import Link from "next/link";
 import { Headshots3x3 } from "@/components/Headshots3x3";
 import { Article } from "@/components/Article";
 import { Suspense } from "react";
-import Image from "next/image";
 import { Project } from "@/components/Project";
 import { Badge } from "@/components/Badge";
 import { WeatherCard } from "@/components/WeatherCard";
 import { ContactsCard } from "@/components/ContactsCard";
 import { MusicCard } from "@/components/MusicCard";
-import tencent2020Image from "@/assets/tencent-img/tencent-2020.png";
-import tencent2022Image from "@/assets/tencent-img/tencent-2022.jpg";
-import tencent2025Image from "@/assets/tencent-img/tencent-2025.png";
-import tencent25Image from "@/assets/tencent-img/tencent-25.png";
-import tencent26Image from "@/assets/tencent-img/tencent-26.png";
-import tencentAvatarImage from "@/assets/tencent-img/tencent-avatar.jpg";
-import tencentHeyingImage from "@/assets/tencent-img/tencent-heying.png";
-import tuanjian2Image from "@/assets/tencent-img/tuanjian-2.png";
-import xinnianWanhui2Image from "@/assets/tencent-img/xinnianwanhui-2.png";
+import { TencentMylesCarousel } from "@/components/TencentMylesCarousel";
 
 export default async function Home() {
   const [
@@ -40,20 +31,6 @@ export default async function Home() {
   ]);
 
   const latestArticles = articles.slice(0, 3);
-  const tencentMylesBackgrounds = [
-    tencentAvatarImage,
-    tencent26Image,
-    tencent25Image,
-    tencent2025Image,
-    tencent2020Image,
-    tencent2022Image,
-    tencentHeyingImage,
-    tuanjian2Image,
-    xinnianWanhui2Image,
-  ];
-  const tencentBackgroundIndex = new Date().getDate() % tencentMylesBackgrounds.length;
-  const mylesBackgroundImage = tencentMylesBackgrounds[tencentBackgroundIndex];
-
   return (
     <main>
       <BentoGrid>
@@ -89,27 +66,7 @@ export default async function Home() {
           project={mylesWellbeing}
           className="order-2 relative sm:col-span-6 sm:row-span-3 bg-gradient-to-b from-yellow-800 to-20% to-orange-300 dark:to-amber-700 overflow-hidden"
         >
-          <div className="pointer-events-none absolute inset-x-0 top-0 h-52 sm:h-[48%] sm:min-h-44 overflow-hidden">
-            {/* Blurred backing layer keeps visual continuity for all aspect ratios. */}
-            <Image
-              src={mylesBackgroundImage}
-              alt=""
-              aria-hidden="true"
-              fill
-              className="object-cover object-top -translate-y-1 scale-110 blur-xl opacity-65"
-              sizes="(min-width: 640px) 50vw, 100vw"
-            />
-            <Image
-              src={mylesBackgroundImage}
-              alt="Tencent team photo background"
-              priority
-              fill
-              className="object-cover object-top -translate-y-1 mix-blend-luminosity"
-              sizes="(min-width: 640px) 50vw, 100vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent from-18% via-orange-300/28 via-58% to-orange-300 dark:via-amber-700/38 dark:to-amber-700" />
-            <div className="absolute inset-x-0 bottom-0 h-24 sm:h-28 bg-gradient-to-b from-transparent via-orange-300/70 to-orange-300 blur-[2px] dark:via-amber-700/75 dark:to-amber-700" />
-          </div>
+          <TencentMylesCarousel />
           <div className="h-52 sm:h-[48%] sm:min-h-44 mb-8" />
           <Badge>Acquired!</Badge>
         </Project>
