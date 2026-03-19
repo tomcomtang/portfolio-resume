@@ -1,6 +1,7 @@
 "use client";
 
 import { BentoItem } from "@/components/BentoItem";
+import { Badge } from "@/components/Badge";
 import { Heading2, Paragraph } from "@/mdx-components";
 import { useLanguage } from "@/components/useLanguage";
 import Link from "next/link";
@@ -20,7 +21,7 @@ type ProfileProjectCardProperties = {
 const COPY = {
   en: {
     "tencent-console": {
-      title: "Tencent Cloud Console Platform",
+      title: "Cloud Config",
       description:
         "Unified platform for Tencent Cloud teams to manage permissions, menus, account configuration, release workflows, and observability.",
       href: "https://console.cloud.tencent.com",
@@ -73,18 +74,19 @@ export function ProfileProjectCard({
         ? consoleViewImage
         : projectKey === "edgeone-pages"
           ? pagesViewImage
-        : null;
+          : null;
   const hasBackground = backgroundImage !== null;
 
   return (
     <BentoItem className={twMerge(className, hasBackground && "overflow-hidden")}>
+      <Badge>Featured</Badge>
       {hasBackground && (
         <div className="pointer-events-none absolute inset-x-0 top-0 h-1/2 overflow-hidden">
           <Image
             src={backgroundImage}
             alt={projectKey === "timmerse" ? "TRTC showroom preview" : "Tencent Cloud console preview"}
             fill
-            className="object-cover object-top mix-blend-luminosity opacity-90"
+            className="object-cover object-top mix-blend-luminosity opacity-15"
             sizes="(min-width: 640px) 50vw, 100vw"
           />
           <div
@@ -103,24 +105,7 @@ export function ProfileProjectCard({
       <div className="relative z-10">
         <Heading2 link className="relative">
           <Link href={COPY.en[projectKey].href} target="_blank">
-            <span className="relative grid">
-              <span
-                className={twMerge(
-                  "col-start-1 row-start-1 transition-opacity duration-300 ease-out",
-                  showZh ? "opacity-0" : "opacity-100"
-                )}
-              >
-                {COPY.en[projectKey].title}
-              </span>
-              <span
-                className={twMerge(
-                  "col-start-1 row-start-1 transition-opacity duration-300 ease-out",
-                  showZh ? "opacity-100" : "opacity-0"
-                )}
-              >
-                {COPY.zh[projectKey].title}
-              </span>
-            </span>
+            {showZh ? COPY.zh[projectKey].title : COPY.en[projectKey].title}
             <span className="absolute inset-0" />
           </Link>
         </Heading2>

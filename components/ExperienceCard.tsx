@@ -1,6 +1,7 @@
 "use client";
 
 import { BentoItem } from "@/components/BentoItem";
+import { Badge } from "@/components/Badge";
 import { Heading2 } from "@/mdx-components";
 import { TencentMylesCarousel } from "@/components/TencentMylesCarousel";
 import { useLanguage } from "@/components/useLanguage";
@@ -86,6 +87,7 @@ export function ExperienceCard() {
 
   return (
     <BentoItem className="order-2 relative sm:col-span-6 sm:row-span-3 bg-gradient-to-b from-yellow-800 to-20% to-orange-300 dark:to-amber-700 overflow-hidden">
+      <Badge className="z-10">Featured</Badge>
       <TencentMylesCarousel />
       <div className="h-52 sm:h-[48%] sm:min-h-44 mb-8" />
 

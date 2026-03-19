@@ -64,7 +64,7 @@ export default async function Home() {
         <div className="order-2 col-span-full flex flex-wrap justify-stretch text-center -m-1">
           <BentoItem className="order-2 md:order-1 m-1 flex-1 relative items-center bg-blue-300 dark:bg-blue-500">
             <Heading2 link className="text-3xl/tight sm:text-4xl/tight">
-              <Link href="https://twitter.com/gregiv_es" target="_blank">
+              <Link href="https://x.com/TangTomcom66610" target="_blank">
                 Twitter
                 <span className="absolute inset-0" />
               </Link>
@@ -72,7 +72,7 @@ export default async function Home() {
           </BentoItem>
           <BentoItem className="order-3 md:order-2 m-1 flex-1 relative items-center bg-slate-300 dark:bg-slate-600">
             <Heading2 link className="text-3xl/tight sm:text-4xl/tight">
-              <Link href="https://github.com/gregives" target="_blank">
+              <Link href="https://github.com/tomcomtang" target="_blank">
                 GitHub
                 <span className="absolute inset-0" />
               </Link>
