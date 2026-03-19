@@ -5,6 +5,7 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import Image from "next/image";
 import { MiniAudioPlayer } from "@/components/MiniAudioPlayer";
+import { MusicCardTitle } from "@/components/MusicCardTitle";
 
 export async function MusicCard() {
   const recentlyPlayedSong = await getRecentlyPlayed();
@@ -36,7 +37,7 @@ export async function MusicCard() {
           className={twMerge("font-bold tracking-wide text-3xl/tight md:text-4xl/tight")}
         >
           {isSpotifyPlaceholder ? (
-            <span className="line-clamp-2">{recentlyPlayedSong.name}</span>
+            <MusicCardTitle fallbackName={recentlyPlayedSong.name} />
           ) : (
             <Link
               href={recentlyPlayedSong.url}

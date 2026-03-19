@@ -44,13 +44,20 @@ export function MiniAudioPlayer({ src, title, className, compact }: Props) {
 
     audio.addEventListener("timeupdate", onTimeUpdate);
     audio.addEventListener("loadedmetadata", onLoaded);
+    audio.addEventListener("durationchange", onLoaded);
     audio.addEventListener("play", onPlay);
     audio.addEventListener("pause", onPause);
     audio.addEventListener("ended", onEnded);
 
+    // If metadata was already loaded (e.g. cached), read duration immediately
+    if (audio.readyState >= 1 && audio.duration) {
+      setDuration(audio.duration);
+    }
+
     return () => {
       audio.removeEventListener("timeupdate", onTimeUpdate);
       audio.removeEventListener("loadedmetadata", onLoaded);
+      audio.removeEventListener("durationchange", onLoaded);
       audio.removeEventListener("play", onPlay);
       audio.removeEventListener("pause", onPause);
       audio.removeEventListener("ended", onEnded);

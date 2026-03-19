@@ -85,7 +85,7 @@ export type RecentlyPlayedResult = {
 function getRecentlyPlayedPlaceholder() {
   return {
     source: "placeholder",
-    name: "My lifestyle",
+    name: "My Life's Theme Song",
     album: "",
     albumImage: {
       url: "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==",

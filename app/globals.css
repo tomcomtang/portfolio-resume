@@ -294,9 +294,10 @@ ul[class] ul[class] {
   position: absolute;
   inset: 0;
   width: var(--mini-eq-progress, 0%);
-  background: rgba(255, 255, 255, 0.55);
-  mix-blend-mode: screen;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: inherit;
   pointer-events: none;
+  transition: width 0.3s linear;
 }
 
 @media (prefers-reduced-motion: reduce) {
