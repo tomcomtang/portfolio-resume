@@ -83,7 +83,12 @@ export function Project({
                 {highlightsZh.map((item, idx) => (
                   <li
                     key={`zh-${idx}-${item}`}
-                    className="mt-0.5 text-left"
+                    className={twMerge(
+                      "mt-1 rounded-lg px-2 py-1 text-left",
+                      idx % 2 === 0
+                        ? "text-slate-900/90 dark:text-slate-100/90 bg-black/[0.02] dark:bg-white/[0.03]"
+                        : "text-slate-900/90 dark:text-slate-100/90 bg-black/[0.04] dark:bg-white/[0.06]"
+                    )}
                   >
                     <span className="leading-relaxed">
                       {idx + 1}. {item}
@@ -102,7 +107,12 @@ export function Project({
                 {highlightsEn.map((item, idx) => (
                   <li
                     key={`en-${idx}-${item}`}
-                    className="mt-0.5 text-left"
+                    className={twMerge(
+                      "mt-1 rounded-lg px-2 py-1 text-left",
+                      idx % 2 === 0
+                        ? "text-slate-900/90 dark:text-slate-100/90 bg-black/[0.02] dark:bg-white/[0.03]"
+                        : "text-slate-900/90 dark:text-slate-100/90 bg-black/[0.04] dark:bg-white/[0.06]"
+                    )}
                   >
                     <span className="leading-relaxed">
                       {idx + 1}. {item}

@@ -5,7 +5,7 @@ import { BentoItem } from "@/components/BentoItem";
 import { Heading2 } from "@/mdx-components";
 import { WeChatQRButton } from "@/components/WeChatQRButton";
 import Image from "next/image";
-import tencentImage from "@/assets/tencent-img/tencent-avatar.jpg";
+import tencentImage from "@/assets/tencent-img/tencent-avatar.png";
 import { useLanguage } from "@/components/useLanguage";
 
 function QQIcon(properties: JSX.IntrinsicElements["svg"]) {

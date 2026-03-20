@@ -7,6 +7,7 @@ import { ArticleMetadata } from "@/types";
 import { twMerge } from "tailwind-merge";
 import { ViewCounter } from "./ViewCounter";
 import { EyeIcon } from "@heroicons/react/24/outline";
+import { useLanguage } from "@/components/useLanguage";
 
 type ArticleProperties = React.ComponentProps<typeof BentoItem> & {
   metadata: ArticleMetadata & {
@@ -19,6 +20,16 @@ export function Article({
   className,
   ...properties
 }: ArticleProperties) {
+  const [language] = useLanguage();
+  const showZh = language === "zh";
+
+  const titleText = showZh
+    ? metadata.titleZh ?? metadata.titleEn ?? metadata.title
+    : metadata.titleEn ?? metadata.title;
+  const descriptionText = showZh
+    ? metadata.descriptionZh ?? metadata.description
+    : metadata.description;
+
   return (
     <BentoItem
       className={twMerge("md:flex-row flex-wrap justify-between", className)}
@@ -26,7 +37,7 @@ export function Article({
     >
       <Heading2 className="flex-grow relative mb-4">
         <Link href={metadata.path}>
-          {metadata.title}
+          {titleText}
           <span className="absolute inset-0" />
         </Link>
       </Heading2>
@@ -37,7 +48,7 @@ export function Article({
         <EyeIcon className="inline w-6 h-6 mr-2 -my-2" aria-hidden="true" />
       </ViewCounter>
       <Paragraph className="w-full flex-shrink-0 mt-4">
-        {metadata.description}
+        {descriptionText}
       </Paragraph>
     </BentoItem>
   );

@@ -34,8 +34,13 @@ export async function loadMarkdown<TPath extends string>(path: TPath) {
 
 export async function loadMarkdownDirectory<TPath extends string>(path: TPath) {
   const slugs = readdirSync(join(process.cwd(), "markdown", path))
-    .filter((path) => path.endsWith(".mdx"))
-    .map((path) => path.replace(/\.mdx$/, ""));
+    .filter((filePath) => filePath.endsWith(".mdx"))
+    .map((filePath) => filePath.replace(/\.mdx$/, ""))
+    .filter((slug) => {
+      // Avoid listing duplicated translated posts in the blog/project lists.
+      // Blog English versions are stored as `*-en.mdx` (loaded only when explicitly requested).
+      return path !== "/blog" ? true : !slug.endsWith("-en");
+    });
 
   return (
     await Promise.all(

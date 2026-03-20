@@ -1,5 +1,6 @@
 import { BentoGrid } from "@/components/BentoGrid";
 import { Project } from "@/components/Project";
+import { Badge } from "@/components/Badge";
 import { loadMarkdownDirectory } from "@/utilities/markdown";
 import { generateTags } from "@/utilities/metadata";
 import { Metadata } from "next";
@@ -24,8 +25,8 @@ export default async function ProjectsPage() {
     "迅雷广告传媒配置平台",
   ] as const;
   const halfWidthFeaturedTitles = [
-    "Astro Cartoon Portfolio",
-    "Astro MultiPage Portfolio",
+    "Cartoon Portfolio",
+    "MultiPage Portfolio",
   ] as const;
 
   const pinnedTitles = new Set([
@@ -40,19 +41,25 @@ export default async function ProjectsPage() {
           <Project
             project={projectsByTitle.get(fullWidthFeaturedTitles[0])!}
             className="bg-pink-300 dark:bg-pink-700"
-          />
+          >
+            <Badge>Featured</Badge>
+          </Project>
         )}
         {projectsByTitle.get(fullWidthFeaturedTitles[1]) && (
           <Project
             project={projectsByTitle.get(fullWidthFeaturedTitles[1])!}
             className="bg-lime-400 dark:bg-lime-700"
-          />
+          >
+            <Badge>Featured</Badge>
+          </Project>
         )}
         {projectsByTitle.get(fullWidthFeaturedTitles[2]) && (
           <Project
             project={projectsByTitle.get(fullWidthFeaturedTitles[2])!}
             className="bg-sky-300 dark:bg-sky-700"
-          />
+          >
+            <Badge>Featured</Badge>
+          </Project>
         )}
         {projectsByTitle.get(fullWidthFeaturedTitles[3]) && (
           <Project

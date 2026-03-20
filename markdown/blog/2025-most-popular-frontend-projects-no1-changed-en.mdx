@@ -1,0 +1,113 @@
+export const metadata = {
+  title: "2025’s Hottest Frontend Projects Revealed: No.1 Changes Hands!",
+  date: "2026-01-07",
+  description:
+    "Based on the 2025 JavaScript Rising Stars list, this article revisits the most popular projects, frontend frameworks, the React ecosystem, full-stack backend trends, build tools, AI, and mobile developments—highlighting the key shifts and what they mean.",
+};
+
+In the 2025 JavaScript Rising Stars list, “heat” is not just abstract trend words—it also shows up in how fast specific products iterate and how effectively they reach real engineering adoption. In this write-up, I’ll structure a recap of the most worth-watching changes: starting with the most popular projects, then expanding into frameworks, the ecosystem, full-stack backend trends, build tools, AI, and mobile.
+
+## Introduction: What is this list looking at?
+
+JavaScript Rising Stars builds multiple sub-lists based on the number of *new stars added in 2025*. That means you’re not only seeing “what was strong in the past,” but “what has been increasingly chosen and noticed by developers recently.” The coverage includes: most popular projects, frontend frameworks, the React ecosystem, backend/full-stack, build tools, artificial intelligence, mobile, the Vue ecosystem, state management, CSS-in-JS, component libraries, testing, desktop, static sites, and GraphQL.
+
+## Most Popular Frontend Projects
+
+### The Winner: [n8n](https://github.com/n8n-io/n8n)
+
+`n8n` is the overall winner this year. It gathered a huge amount of star growth (the issue mentions more than 112,000 in the period). Compared with many “works well enough” automation tools, `n8n` stands out because it blends “workflow automation” with native AI capabilities and offers a visualization/assembly workflow that works well for engineering teams.
+
+It’s also worth noting that within the top ten, there are several AI-related items, such as:
+
+- `Onlook`: AI-first visual editing for React applications
+- `Dyad`: a free, local-first, open-source AI app builder (positioned as an alternative to v0/lovable/Bolt)
+- `Stagehand`: AI-driven browser automation tasks
+
+### The Runner-up: [React Bits](https://github.com/DavidHDev/react-bits)
+
+React Bits feels more like a “production-ready inspiration kit.” It provides a set of consistent, React-friendly animated UI components (background effects, text animations, cards, and more). The goal is clear: help you ship pages with polish without sacrificing maintainability.
+
+There’s also a deeper link to the `shadcn/ui` ecosystem: you can register/consume components in your project via the recommended approach, and it even includes a studio-like UI for tuning options and exporting reusable snippets.
+
+### The Third Place: [shadcn-ui](https://github.com/shadcn-ui/ui)
+
+Third place goes to `shadcn-ui`. Its value isn’t only “pretty components,” but also solid engineering details: consistent interaction patterns, better accessibility, and attention to keyboard operation and semantic structure.
+
+It also integrates a collection of strong foundations (for example, Radix UI and TanStack Table headless capabilities). From an engineering perspective, it strikes a good balance between “ready to use out of the box” and “deeply customizable.”
+
+## Frontend Frameworks: React Once Again Takes the Core Seat
+
+The original viewpoint is straightforward: React has regained the top spot among frontend frameworks this year. Besides community momentum, the bigger reason is that React is moving toward a “server-first” development paradigm.
+
+For example, React 19 brings improvements related to the Activity API and enhanced hooks for managing user events. Meanwhile, the React effects ecosystem is back in the spotlight—also because the issue points out a Cloudflare incident: an incorrect use of `useEffect` can lead to infinite API calls, causing severe service outages and even DDoS.
+
+The larger structural shift comes from React Server Components: by using RSC, server actions/functions, and streaming, React reorganizes capabilities and boundaries. However, those changes also bring new risks, including an RCE vulnerability around RSC that requires urgent patches.
+
+In addition to React, `Ripple` is also highlighted: it’s described as a new UI framework that blends React, Solid, and Svelte ideas—emphasizing responsive primitives, a component architecture, and a clear, controllable template syntax.
+
+For “state expression,” `Svelte 5`’s runtime model (including a more standardized approach to reactivity) keeps it strong on the list—using a new reactive model to reduce cognitive load and make complex UI easier to build correctly.
+
+## The React Ecosystem: The Tension Between Strong Server Power and Client Simplicity
+
+The issue summarizes a long-running contradiction in the React ecosystem: stronger server capabilities vs. keeping client development simple and predictable.
+
+Under the push of Next.js, React is moving toward RSC, server functions, and streaming—opening new possibilities for performance and architecture. But it also demands that developers understand the boundaries: where the client ends, where the server begins, how data flows across the lifecycle, and what each rendering stage is responsible for.
+
+Opinions are split. Some see this as a natural evolution; others worry that increased complexity and thicker abstraction layers introduce more “hard-to-predict” engineering risks. The issue also mentions that security discussions further intensify this split.
+
+Against this background, `TanStack Start` is gaining attention: it’s described as more client-centered in its isomorphic approach, emphasizing clarity and type safety, and trying to refocus the debate from “framework arguments” back to a more practical question—how much abstraction engineers should accept.
+
+## Backend / Full-Stack: From “Assembling Capabilities” to “Unified Abstractions”
+
+In the full-stack list, `Motia` is described as a paradigm shift: it aims to consolidate capabilities that historically required multiple independent frameworks into a single system. Instead of assembling and managing separate concerns—APIs, background tasks, queues, workflows, data flows, and AI agents—you organize them in a consistent way.
+
+Its core abstraction is “Steps.” Each step includes configuration (to define triggers, paths, and schedules) and a handler (to implement business logic). When you change a step type, you can reuse the same pattern across multiple use cases—API endpoints, event handlers, and scheduled tasks.
+
+On implementation, Motia can be written in TypeScript or Python. It also provides observability via Workbench, and includes state management and streaming capabilities.
+
+The issue further notes continuation and swap-like trends: for example, `Payload` continues evolving based on Next.js hybrid headless CMS and was acquired by Figma; `Next.js 16` introduces cache components to make caching more explicit; `Astro` stays high on the list; `Hono` is favored due to its lightweight core and middleware ecosystem; and `TanStack Start` keeps rising in full-stack directions.
+
+## Build Tools: Bun, Oxc/Rolldown, and Changes in the Testing Ecosystem
+
+The highlights in the tooling section cluster around two themes: more “full-stack” toolchain integration, and updates in testing/run patterns that relate to engineering quality.
+
+The issue puts `Bun` first: it’s viewed as an integrated JavaScript toolkit, steadily improving Node.js compatibility and pushing performance enhancements—plus it was acquired by Anthropic at the end of the year, making its roadmap more promising.
+
+In the “next-gen bundling and compilation” direction, `void(0)`’s `Oxc` and `Rolldown` keep being mentioned. They expand the Vite ecosystem with new tooling, while `Vitest` also adds a much-anticipated feature: browser mode.
+
+`Rspack` also appears in the discussion. As a Rust-driven bundler, it’s viewed as faster and well-aligned with existing production workflows—so it’s adopted more widely.
+
+Also highlighted: Next.js’ shift to Turbopack affects development and feedback speed directly, and TypeScript’s “Go rewrite” teaser is treated as an important signal for future infrastructure. The issue notes that TS6 is presented as a bridge version.
+
+## AI: From “Chat” to “Workflow Engines”
+
+The issue argues that the era of chatbots is ending. More importantly, developers are shifting attention away from “how to make prompts better,” and toward “how to automate workflows directly.”
+
+Taking `n8n` as an example, the issue expects growth in users and notes that it’s becoming more common when connecting models and building agent/workflow tooling. Meanwhile, companies such as Flowise, Mastra, and Stagehand continue to advance in automation and agent workflows.
+
+The core idea is also clear: instead of constantly asking “how to get an LLM to respond better,” prioritize “which workflows can be handled end-to-end by AI.” For example:
+
+- Use [`n8n`](https://github.com/n8n-io/n8n) or `Flowise` to build event-triggered, reasoning-based, auto-executing programs
+- Use `Mastra` to coordinate agent workflows across tools
+- Use `Stagehand` to automate browser tasks
+
+Finally, the issue points out a direction it considers more critical: `code mode`, which it views as a major breakthrough for the field since MCP.
+
+## Mobile: React Native Loses the Top Spot—New Frameworks Rewrite the Story
+
+On the mobile list, React Native and Expo can’t keep the #1 position this year. Instead, two new frameworks—`Valdi` and `Lynx`—take the stage.
+
+`Valdi` is described as a route optimized for “lightweight, lazy loading, and extensibility.” The goal is to let users enable new features more selectively without obvious performance trade-offs. It also borrows ways of expressing from Web technology and supports TypeScript, JSX, Flexbox, and similar developer experiences.
+
+`Lynx` focuses more on interaction experience. The issue mentions that it uses a dual-thread architecture to avoid single-thread bottlenecks, and provides capabilities similar to web abstractions—defaulting to a more natural React abstraction.
+
+The issue also notes other shifts beyond this one: `Dioxus` is ranked fourth as a challenger to a “more excellent Flutter.” While it currently defaults to using a system WebView, its long-term goal is to stabilize Blitz, and to render via wgpu using native graphics APIs (such as Vulkan and Metal).
+
+## Conclusion: Turn List Signals Into Engineering Decisions
+
+If you treat these lists as “trend radars,” the most effective approach isn’t to follow blindly—it’s to translate them into actionable engineering choices. Understand what each project solves, what the engineering boundaries are, and where the risks sit, then validate with low-cost experiments before betting on a production scenario.
+
+That’s the key takeaway from this recap: while changes are plenty, the direction is often clear—toolchains are getting faster and more consistent, frameworks are moving toward clearer server boundaries, AI is becoming a capability component, and everything still comes back to engineering delivery and maintainability.
+
+>(This article was rewritten and summarized based on the issue content you provided.)
+

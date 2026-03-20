@@ -1,9 +1,9 @@
-import { ArticleHeader } from "@/components/ArticleHeader";
 import { BentoGrid } from "@/components/BentoGrid";
 import { BentoItem } from "@/components/BentoItem";
 import { loadMarkdown } from "@/utilities/markdown";
 import { generateTags } from "@/utilities/metadata";
 import { Metadata } from "next";
+import { BlogArticleContent } from "@/components/BlogArticleContent";
 
 export async function generateMetadata({
   params,
@@ -28,14 +28,11 @@ export default async function ArticlePage({
     slug: string;
   };
 }) {
-  const { Content, metadata } = await loadMarkdown(`/blog/${params.slug}`);
-
   return (
     <main>
       <BentoGrid className="h-full">
         <BentoItem className="justify-start show-toc sm:col-span-8 bg-slate-50 dark:bg-slate-800 dark:before:opacity-25">
-          <ArticleHeader metadata={metadata} />
-          <Content />
+          <BlogArticleContent slug={params.slug} />
         </BentoItem>
         <BentoItem className="hidden sm:flex col-span-4 bg-slate-800" inset />
       </BentoGrid>
