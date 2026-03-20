@@ -1,6 +1,25 @@
 export const metadata = {
   title: "迅雷广告传媒配置平台",
+  titleEn: "Xunlei Ad Media Configuration Platform",
   date: "3000-01-01",
   description:
-    "面向迅雷下载、XMP 播放器与游戏盒等业务的统一广告配置与投放平台，覆盖广告位规则、频控策略、SDK 接入、灰度发布和效果监控回流。",
+    "A unified advertising operations platform for Xunlei's full product line (Xunlei download, XMP player, Xunlei gaming box, etc.), responsible for ad delivery configuration and resource distribution across multi-terminal and multi-business scenarios.",
+  descriptionZh:
+    "面向迅雷全线产品（迅雷下载、XMP 播放器、迅雷游戏盒等）的统一广告运营平台，负责多终端、多业务场景的广告投放配置与资源分发。",
+  highlightsZh: [
+    "配置系统：支持按广告位标记进行管理，基于时间维度的广告位分时段配置，广告频次 / 频率控制策略，以及广告配置文件的生成与多环境发布流程。",
+    "资源分发与展示：根据配置系统生成的规则，对各广告位进行实际广告内容渲染与展现，包括特效广告形式、曝光与点击频次控制等能力，保障业务侧可控、可观测的广告投放效果。",
+    "广告 SDK 模块：统一接入 JS SDK / 原生 SDK，支持异步加载、插槽化渲染、兜底物料与容灾逻辑，降低对各终端宿主产品代码的侵入。",
+    "规则引擎与频控模块：围绕广告位、时段、用户标签、曝光 / 点击频次构建规则引擎，支持多维度权重与优先级配置，并通过本地缓存 + 分布式缓存保证高 QPS 下的实时决策能力。",
+    "配置发布与灰度模块：配置变更走「审核 → 灰度 → 全量」流水线，支持按用户比例 / 区域 / 渠道的灰度策略，提供一键回滚能力，确保广告策略调整的安全性与可回退。",
+    "监控与数据回流模块：埋点采集曝光 / 点击 / 转化等关键指标，打通日志与 BI 系统，用于投放效果分析、频控策略优化与素材 A/B 实验。",
+  ],
+  highlightsEn: [
+    "Configuration system: manage by ad-slot tags, time-based scheduling, frequency/rate control strategies, and generation of ad config files with multi-environment publishing.",
+    "Resource distribution & rendering: apply config rules to generate and display real ad content per slot, including special-effect ad formats and exposure/click frequency control for controllable, observable ad delivery.",
+    "Ad SDK module: unify integration for JS SDK and native SDKs, supporting async loading, slot-based rendering, fallback creatives/materials, and disaster-recovery logic with minimal host code intrusion.",
+    "Rule engine & frequency capping: build decision rules around ad slots, time windows, user tags, and exposure/click frequency; support multi-dimensional weights & priorities, and guarantee real-time decisions under high QPS via local + distributed caching.",
+    "Config publishing & canary: follow a review → canary → full rollout pipeline for changes, support canary strategies by user ratio/region/channel, and provide one-click rollback to keep strategy updates safe and reversible.",
+    "Monitoring & data backflow: collect key metrics (impressions/clicks/conversions) via tracking, connect logs and BI systems for campaign analysis, frequency strategy optimization, and creative A/B experiments.",
+  ],
 };
