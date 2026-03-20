@@ -11,6 +11,7 @@ export function Button({
     <button
       className={twMerge(
         "relative rounded-xl bg-gradient-to-br from-sky-700 to-sky-800 px-4 py-2.5 before:absolute before:-inset-[2px] before:rounded-[14px] before:-z-10 before:bg-gradient-to-br before:from-sky-500 before:via-sky-700 before:to-sky-800 focus:outline-offset-0",
+        "transition-transform duration-200 ease-out hover:-translate-y-0.5 hover:scale-[1.02]",
         className
       )}
       type={type}

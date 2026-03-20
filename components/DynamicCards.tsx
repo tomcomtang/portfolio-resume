@@ -39,10 +39,10 @@ export async function DynamicCards() {
               <Link
                 href={recentlyPlayedSong.url}
                 target="_blank"
-                className="line-clamp-2"
+                className="dock-hover relative block w-full line-clamp-2"
               >
                 {recentlyPlayedSong.name}
-                <span className="absolute inset-0" />
+                <span className="absolute inset-0 pointer-events-none" />
               </Link>
             )}
           </Heading2>

@@ -12,6 +12,7 @@ import { MusicCard } from "@/components/MusicCard";
 import { IntroBlurb } from "@/components/IntroBlurb";
 import { ExperienceCard } from "@/components/ExperienceCard";
 import { ProfileProjectCard } from "@/components/ProfileProjectCard";
+import { HomeTestimonialCard } from "@/components/HomeTestimonialCard";
 
 export default async function Home() {
   const [articles] = await Promise.all([loadMarkdownDirectory("/blog")]);
@@ -64,25 +65,36 @@ export default async function Home() {
         <div className="order-2 col-span-full flex flex-wrap justify-stretch text-center -m-1">
           <BentoItem className="order-2 md:order-1 m-1 flex-1 relative items-center bg-blue-300 dark:bg-blue-500">
             <Heading2 link className="text-3xl/tight sm:text-4xl/tight">
-              <Link href="https://x.com/TangTomcom66610" target="_blank">
+              <Link
+                href="https://x.com/TangTomcom66610"
+                target="_blank"
+                className="dock-hover relative block w-full"
+              >
                 Twitter
-                <span className="absolute inset-0" />
+                <span className="absolute inset-0 pointer-events-none" />
               </Link>
             </Heading2>
           </BentoItem>
           <BentoItem className="order-3 md:order-2 m-1 flex-1 relative items-center bg-slate-300 dark:bg-slate-600">
             <Heading2 link className="text-3xl/tight sm:text-4xl/tight">
-              <Link href="https://github.com/tomcomtang" target="_blank">
+              <Link
+                href="https://github.com/tomcomtang"
+                target="_blank"
+                className="dock-hover relative block w-full"
+              >
                 GitHub
-                <span className="absolute inset-0" />
+                <span className="absolute inset-0 pointer-events-none" />
               </Link>
             </Heading2>
           </BentoItem>
           <BentoItem className="order-1 md:order-3 w-full md:w-auto m-1 flex-grow lg:flex-1 relative items-center bg-purple-300 dark:bg-purple-700">
             <Heading2>
-              <Link href="/projects">
+              <Link
+                href="/projects"
+                className="dock-hover relative block w-full"
+              >
                 Other projects
-                <span className="absolute inset-0" />
+                <span className="absolute inset-0 pointer-events-none" />
               </Link>
             </Heading2>
           </BentoItem>
@@ -95,9 +107,9 @@ export default async function Home() {
             link
             className="text-center sm:text-left sm:[writing-mode:vertical-lr] sm:rotate-180 sm:p-0 sm:text-6xl text-slate-50"
           >
-            <Link href="/blog">
+              <Link href="/blog" className="dock-hover relative block w-full">
               From the blog
-              <span className="absolute inset-0" />
+                <span className="absolute inset-0 pointer-events-none" />
             </Link>
           </Heading2>
         </BentoItem>
@@ -109,29 +121,7 @@ export default async function Home() {
           />
         ))}
         <BentoItem className="order-2 bg-sky-700 dark:bg-sky-900 text-slate-100 before:opacity-25 shadow-xl">
-          <div className="flex flex-col md:flex-row md:items-end justify-between">
-            <div className="flex flex-col lg:flex-row">
-              <div className="relative w-20 h-16 flex-shrink-0">
-                <div className="absolute -top-1 left-0 font-display font-extrabold text-9xl/none">
-                  &ldquo;
-                </div>
-              </div>
-              <blockquote className="text-xl sm:text-2xl flex-grow max-w-xl font-light">
-                He is a full-stack developer and front-end architect with a wide
-                range of skills—from building reliable product systems to
-                designing 3D scene experiences and delivering real-time
-                collaboration. His working style is calm, proactive, and quality-driven.
-              </blockquote>
-            </div>
-            <div className="flex-shrink-0 md:ml-16">
-              <p className="mt-12 md:mt-0 md:text-right text-4xl/tight sm:text-5xl/tight font-display font-bold tracking-wide uppercase">
-                Mr. Li
-              </p>
-              <p className="mt-4 md:text-right md:text-lg">
-                Head, Fifth Dept., Tencent Cloud
-              </p>
-            </div>
-          </div>
+          <HomeTestimonialCard />
         </BentoItem>
       </BentoGrid>
     </main>

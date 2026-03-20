@@ -106,9 +106,13 @@ export function ProfileProjectCard({
 
       <div className="relative z-10">
         <Heading2 link className="relative">
-          <Link href={COPY.en[projectKey].href} target="_blank">
+          <Link
+            href={COPY.en[projectKey].href}
+            target="_blank"
+            className="dock-hover relative block w-full"
+          >
             {showZh ? COPY.zh[projectKey].title : COPY.en[projectKey].title}
-            <span className="absolute inset-0" />
+            <span className="absolute inset-0 pointer-events-none" />
           </Link>
         </Heading2>
 

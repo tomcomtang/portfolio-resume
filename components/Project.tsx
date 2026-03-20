@@ -41,9 +41,10 @@ export function Project({
         <Link
           href={project.website ? project.website : project.path}
           target={project.website ? "_blank" : undefined}
+          className="dock-hover relative block w-full"
         >
           {titleText}
-          <span className="absolute inset-0" />
+          <span className="absolute inset-0 pointer-events-none" />
         </Link>
       </Heading2>
       <Paragraph className="mb-0">

@@ -40,11 +40,11 @@ export function WeChatQRButton() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
+        className="footer-dock group text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
         aria-label={copy[language].qr}
         title={copy[language].wechat}
       >
-        <QrCodeIcon className="h-6 w-6" aria-hidden="true" />
+        <QrCodeIcon className="footer-dock-icon h-6 w-6" aria-hidden="true" />
       </button>
 
       {open && (
@@ -64,7 +64,7 @@ export function WeChatQRButton() {
               </div>
               <button
                 type="button"
-                className="text-slate-300 hover:text-slate-100"
+                className="dock-hover text-slate-300 hover:text-slate-100"
                 onClick={() => setOpen(false)}
                 aria-label={copy[language].close}
               >

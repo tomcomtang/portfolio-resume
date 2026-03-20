@@ -56,7 +56,7 @@ function HeaderLink({
   return (
     <Link
       className={twMerge(
-        "-my-1 py-1 px-2 inline-flex items-center text-sm font-medium",
+        "-my-1 py-1 px-2 inline-flex items-center text-sm font-medium transition-opacity duration-200 ease-out hover:opacity-80 dock-hover",
         className
       )}
       {...properties}
@@ -71,7 +71,7 @@ function HeaderButton({
   return (
     <button
       className={twMerge(
-        "-my-1 py-1 px-2 inline-flex items-center text-sm font-medium",
+        "-my-1 py-1 px-2 inline-flex items-center text-sm font-medium transition-opacity duration-200 ease-out hover:opacity-80 dock-hover",
         className
       )}
       {...properties}

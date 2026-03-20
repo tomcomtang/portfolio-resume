@@ -2,21 +2,21 @@
 
 import { Container } from "./Container";
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
-import { ViewCounter } from "./ViewCounter";
 import { Heading2, Paragraph } from "@/mdx-components";
 import { Button } from "./Button";
 import { useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useLanguage } from "@/components/useLanguage";
 
 const navigation = [
   {
     name: "Email",
-    href: "mailto:greg@gregives.co.uk",
+    href: "mailto:364786053@qq.com",
     icon: EnvelopeIcon,
   },
   {
     name: "Twitter",
-    href: "https://twitter.com/gregiv_es",
+    href: "https://x.com/TangTomcom66610",
     icon: (properties: JSX.IntrinsicElements["svg"]) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...properties}>
         <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
@@ -25,7 +25,7 @@ const navigation = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/gregives",
+    href: "https://github.com/tomcomtang",
     icon: (properties: JSX.IntrinsicElements["svg"]) => (
       <svg fill="currentColor" viewBox="0 0 24 24" {...properties}>
         <path
@@ -41,6 +41,50 @@ const navigation = [
 type FooterProperties = JSX.IntrinsicElements["footer"];
 
 export function Footer(properties: FooterProperties) {
+  const [language] = useLanguage();
+  const showZh = language === "zh";
+
+  const copy = {
+    en: {
+      heading: "Hiring & Collaboration",
+      paragraph:
+        "If you’d like to hire me, share your email below and I’ll follow up. You’ll also get occasional updates on new blog posts and selected projects.",
+      formEmailAria: "Your email",
+      formMessageAria: "Your message",
+      emailPlaceholder: "Email address",
+      messagePlaceholder: "Your message",
+      submit: "Submit",
+      errors: {
+        emailRequired: "Please enter your email address.",
+        emailInvalid: "Please enter a valid email address.",
+        messageRequired: "Please leave a message.",
+        submitFailed: "Submit failed. Please try again.",
+      },
+      success: "Submitted successfully. I’ll contact you via email.",
+      closeTipsError: "Submit failed. Please try again.",
+    },
+    zh: {
+      heading: "招聘与合作",
+      paragraph:
+        "如果你想雇佣我，请在下方填写你的邮箱，我会尽快回复你。你也会收到关于新博客文章以及精选项目的少量更新。",
+      formEmailAria: "你的邮箱",
+      formMessageAria: "你的留言",
+      emailPlaceholder: "邮箱地址",
+      messagePlaceholder: "你的留言",
+      submit: "提交",
+      errors: {
+        emailRequired: "请输入你的邮箱地址。",
+        emailInvalid: "请输入有效的邮箱地址。",
+        messageRequired: "请填写留言内容。",
+        submitFailed: "提交失败，请重试。",
+      },
+      success: "提交成功，我将通过邮箱联系你。",
+      closeTipsError: "提交失败，请重试。",
+    },
+  } as const;
+
+  const t = showZh ? copy.zh : copy.en;
+
   const scrollToBottom = () => {
     document.documentElement.scrollTo(0, document.documentElement.scrollHeight);
   };
@@ -78,14 +122,19 @@ export function Footer(properties: FooterProperties) {
         <Container className="pb-8 px-6 sm:px-8 md:px-10 lg:px-12">
           <div className="py-16 sm:py-24 text-center flex flex-col items-center bg-radial-gradient-t from-sky-900 to-transparent">
             <Heading2 className="text-4xl/tight sm:text-5xl/tight tracking-wide">
-              <span className="hidden sm:inline-block md:skew-y-6 origin-right">
-                Hiring
-              </span>{" "}
-              & Collaboration
+              {showZh ? (
+                <span className="inline-block">{t.heading}</span>
+              ) : (
+                <>
+                  <span className="hidden sm:inline-block md:skew-y-6 origin-right">
+                    Hiring
+                  </span>{" "}
+                  & Collaboration
+                </>
+              )}
             </Heading2>
             <Paragraph className="max-w-xl">
-              If you’d like to hire me, share your email below and I’ll follow up.
-              You’ll also get occasional updates on new blog posts and selected projects.
+              {t.paragraph}
             </Paragraph>
           <form
             action="/api/notion/subscribe"
@@ -103,20 +152,20 @@ export function Footer(properties: FooterProperties) {
 
               const email = formData.get("email_address")?.toString().trim();
               if (!email) {
-                showTip("error", "Please enter your email address.");
+                  showTip("error", t.errors.emailRequired);
                 setIsSubmitting(false);
                 return;
               }
 
               if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-                showTip("error", "Please enter a valid email address.");
+                  showTip("error", t.errors.emailInvalid);
                 setIsSubmitting(false);
                 return;
               }
 
               const message = formData.get("message")?.toString().trim();
               if (!message) {
-                showTip("error", "Please leave a message.");
+                  showTip("error", t.errors.messageRequired);
                 setIsSubmitting(false);
                 return;
               }
@@ -134,29 +183,35 @@ export function Footer(properties: FooterProperties) {
                 if (res.ok && json?.ok) {
                   showTip(
                     "success",
-                    "Submitted successfully. I’ll contact you via email."
+                    t.success
                   );
+                  // Clear form on success.
+                  e.currentTarget.reset();
                 } else {
                   showTip(
                     "error",
-                    json?.error ?? "Submit failed. Please try again."
+                    json?.error ?? t.errors.submitFailed
                   );
                 }
               } catch {
-                showTip("error", "Submit failed. Please try again.");
+                showTip("error", t.closeTipsError);
               } finally {
                 setIsSubmitting(false);
               }
             }}
-            className="mt-8 w-full max-w-xl border border-white/10 bg-[radial-gradient(100%_57.65%_at_0%_54.86%,_#0B4A6B_0%,_#0F2A3A_45%,_rgba(11,74,107,0)_100%)] rounded-[1.5rem] px-5 py-7 sm:px-10 sm:py-10 flex flex-col space-y-3"
+            className="mt-8 w-full max-w-xl border border-white/10 bg-slate-900/30 relative overflow-hidden rounded-[1.5rem] px-5 py-7 sm:px-10 sm:py-10 flex flex-col space-y-3"
             method="POST"
           >
-            <label className="relative block">
-              <span className="sr-only">Your email here</span>
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(220%_62%_at_0%_55%,_#0A4F75_0%,_#072C3D_60%,_rgba(8,56,79,0.25)_100%)] footer-glow-pulse"
+            />
+            <label className="relative z-10 block">
+              <span className="sr-only">{t.formEmailAria}</span>
               <input
                 type="email"
                 name="email_address"
-                placeholder="Your email here"
+                placeholder={t.emailPlaceholder}
                 className="text-lg leading-[1.2] border border-white/15 rounded-2xl w-full transition-colors px-5 py-3 sm:py-3.5 placeholder:opacity-60 hover:border-white focus:border-white focus:outline-none pr-[110px] bg-transparent text-white"
               />
               <button
@@ -165,6 +220,7 @@ export function Footer(properties: FooterProperties) {
                 className={[
                   "absolute right-2 top-2 bottom-2 cursor-pointer text-sm leading-none rounded-full px-4 font-medium",
                   "bg-slate-800/70 hover:bg-slate-700/70 active:bg-slate-700/60",
+                  "dock-hover",
                   "border border-white/10",
                   "text-slate-100",
                   "disabled:opacity-70 disabled:cursor-default",
@@ -193,17 +249,17 @@ export function Footer(properties: FooterProperties) {
                     />
                   </svg>
                 ) : (
-                  "Submit"
+                  t.submit
                 )}
               </button>
             </label>
 
             <textarea
-              aria-label="Message"
+              aria-label={t.formMessageAria}
               name="message"
-              placeholder="Message"
+              placeholder={t.messagePlaceholder}
               maxLength={2000}
-              className="w-full appearance-none bg-transparent text-white rounded-2xl px-5 py-3 border border-white/15 placeholder:text-slate-400 focus:outline-none focus:ring-0 focus:border-white min-h-[96px] resize-y"
+              className="relative z-10 w-full appearance-none bg-transparent text-white rounded-2xl px-5 py-3 border border-white/15 placeholder:text-slate-400 focus:outline-none focus:ring-0 focus:border-white min-h-[96px] resize-y"
             />
           </form>
           </div>
@@ -213,18 +269,18 @@ export function Footer(properties: FooterProperties) {
                 <a
                   key={item.name}
                   href={item.href}
-                  className="text-slate-400 hover:text-slate-500"
+                  className="footer-dock group text-slate-400 hover:text-slate-500 transition-colors duration-200"
                 >
                   <span className="sr-only">{item.name}</span>
-                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                <item.icon
+                  className="footer-dock-icon h-6 w-6 transform-gpu will-change-transform"
+                  aria-hidden="true"
+                />
                 </a>
               ))}
             </div>
             <p className="text-slate-500 sm:order-1">
-              &copy; {new Date().getFullYear()} Greg Ives
-            </p>
-            <p className="text-slate-500 sm:order-2">
-              <ViewCounter increment />
+              &copy; {new Date().getFullYear()} Childtom
             </p>
           </div>
         </Container>

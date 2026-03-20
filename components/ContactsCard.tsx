@@ -61,29 +61,29 @@ export function ContactsCard() {
             href="https://wpa.qq.com/msgrd?v=3&uin=364786053&site=qq&menu=yes"
             target="_blank"
             rel="noreferrer"
-            className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
+            className="footer-dock group text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
             aria-label="QQ: 364786053"
             title="QQ: 364786053"
           >
-            <QQIcon className="h-6 w-6" aria-hidden="true" />
+            <QQIcon className="footer-dock-icon h-6 w-6" aria-hidden="true" />
           </a>
 
           <a
             href="tel:18813676461"
-            className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
+            className="footer-dock group text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
             aria-label={`${copy[language].phone}: 18813676461`}
             title={`${copy[language].phone}: 18813676461`}
           >
-            <PhoneIcon className="h-6 w-6" aria-hidden="true" />
+            <PhoneIcon className="footer-dock-icon h-6 w-6" aria-hidden="true" />
           </a>
 
           <a
             href="mailto:364786053@qq.com"
-            className="text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
+            className="footer-dock group text-slate-700 hover:text-slate-800 dark:text-slate-200 dark:hover:text-slate-100 transition"
             aria-label={`${copy[language].email}: 364786053@qq.com`}
             title={`${copy[language].email}: 364786053@qq.com`}
           >
-            <EnvelopeIcon className="h-6 w-6" aria-hidden="true" />
+            <EnvelopeIcon className="footer-dock-icon h-6 w-6" aria-hidden="true" />
           </a>
 
           <WeChatQRButton />

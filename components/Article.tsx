@@ -36,9 +36,12 @@ export function Article({
       {...properties}
     >
       <Heading2 className="flex-grow relative mb-4 z-20">
-        <Link href={metadata.path}>
+        <Link
+          href={metadata.path}
+          className="dock-hover relative block w-full transition-transform duration-200 ease-out"
+        >
           {titleText}
-          <span className="absolute inset-0" />
+          <span className="absolute inset-0 pointer-events-none" />
         </Link>
       </Heading2>
       <ViewCounter
