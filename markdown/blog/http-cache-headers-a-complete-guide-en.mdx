@@ -1,0 +1,165 @@
+export const metadata = {
+  title: "HTTP Cache Headers - A Complete Guide",
+  date: "2023-11-16",
+  description:
+    "As a website owner, you want your website to be fast, efficient, and accessible to as many users as possible. One of the best ways to achieve this is by using HTTP caching headers.",
+};
+
+![HTTP Cache Headers - A Complete Guide](blog/http-cache-headers.png)
+
+As a website owner, you want your website to be fast, efficient, and accessible to as many users as possible. These headers tell web browsers and other HTTP clients how to cache and serve content from your website.
+
+This article highlights important information on HTTP caching headers and associated CDN behavior. In case you are looking for in-depth information on the role of HTTP cache headers in the modern web, here's everything you need to know.
+
+## How caching works
+
+When a browser requests a file from a server, the server responds with the file and some cache headers. The browser then caches the file based on these headers. The next time the browser requests the same file, it checks its cache to see if it already has a copy.
+
+If it does, and the file hasn't expired, the browser serves the cached version of the file. If the file has expired or if the browser has been told not to cache it, the browser requests a fresh copy of the file from the server.
+
+Caching works differently depending on the type of cache being used. There are two main types of caches: browser caches and CDN caches.
+
+### Browser caches
+
+Browser caches are local caches that are used by web browsers to store copies of files. When a browser requests a file, it first checks its local cache to see if it already has a copy. If it does, and the file hasn't expired, the browser serves the cached version. If the file has expired, or if the browser has been told not to cache it, the browser requests a fresh copy of the file from the server.
+
+### CDN caches
+
+[CDN](https://www.keycdn.com/what-is-a-cdn) caches are distributed caches that are used by Content Delivery Networks (CDNs) to store copies of files. When a browser requests a file from a website that is using a CDN, the request is sent to the CDN instead of the origin server.
+
+If the CDN has a cached copy of the file, it serves it directly to the browser. This can greatly reduce the amount of time and resources needed to load the file, as the request doesn't need to travel all the way to the origin server.
+
+CDN caches can be configured in a number of different ways, depending on the needs of the website. Some CDNs use a "pull" model, where the CDN only caches files when they are requested by a browser. Other CDNs use a "push" model, where the origin server sends files to the CDN proactively before they are requested by a browser.
+
+## What are HTTP cache headers?
+
+HTTP cache headers are instructions that web servers send to web browsers, telling them how to cache and serve content. These headers are sent with every HTTP request and response. They can be used to control how frequently a browser caches a file, how long the cache should keep the file, and what should be done when the file is expired.
+
+HTTP cache headers are important because they help reduce the amount of time and resources needed to load a web page. By caching content, a browser can serve it more quickly without having to request it from the server every time a user visits the page. This can improve website performance, reduce server load, and improve the overall user experience.
+
+## Types of HTTP cache headers
+
+Caches work with content mainly through freshness and validation. A fresh representation is available instantly from a cache while a validated representation rarely sends the entire representation again if it hasn't changed.
+
+In cases where there is no validator present (e.g. `ETag` or `Last-Modified` header), and a lack of explicit freshness info, it will usually (but not always) be considered uncacheable. Let's shift our focus to the kind of headers you should be concerned about.
+
+### 1. Cache-Control
+
+Every resource can define its own caching policy via the `Cache-Control` HTTP header. Cache-Control directives control who caches the response, under what conditions and for how long.
+
+![cache control header](blog/cache-control-header.png)
+
+Requests that don't need server communication are considered the best requests: local copies of the responses allow the elimination of network latency as well as data charges resulting from data transfers.
+
+The HTTP specification enables the server to send several different Cache-Control directives which control how and for how long individual responses are cached by browsers among other intermediate caches such as a CDN.
+
+```none
+Cache-Control: private, max-age=0, no-cache
+```
+
+These settings are referred to as response directives. They are as follows:
+
+### public vs private
+
+A response that is marked `public` can be cached even in cases where it is associated with an HTTP authentication or the HTTP response status code is not cacheable normally. In most cases, a response marked `public` isn't necessary, since explicit caching information (e.g. `max-age`) shows that a response is cacheable anyway.
+
+On the contrary, a response marked `private` can be cached (by the browser) but such responses are typically intended for single users hence they aren't cacheable by intermediate caches (e.g. HTML pages with private user info can be cached by a user's browser but not by a CDN).
+
+### no-cache and no-store
+
+![no-cache header](blog/no-cache-header.png)
+
+`no-cache` shows that returned responses can't be used for subsequent requests to the same URL before checking if server responses have changed. If a proper `ETag` (validation token) is present as a result, `no-cache` incurs a roundtrip in an effort to validate cached responses.
+
+On the contrary, `no-store` is simpler. This is the case because it disallows browsers and all intermediate caches from storing any versions of returned responses, such as responses containing private/personal information or banking data. Every time users request this asset, requests are sent to the server.
+
+### max-age
+
+The `max-age` directive states the maximum amount of time in seconds that fetched responses are allowed to be used again (from the time when a request is made).
+
+### s-maxage
+
+The "s-" stands for shared as in shared cache. This directive is explicitly for CDNs among other intermediary caches. This directive overrides the `max-age` directive and expires the header field when present.
+
+### must-revalidate
+
+The `must-revalidate` directive is used to tell a cache that it must first revalidate an asset with the origin after it becomes stale.
+
+### proxy-revalidate
+
+The `proxy-revalidate` directive is the same as the `must-revalidate` directive, however it only applies to shared caches such as proxies.
+
+### no-transform
+
+The `no-transform` directive tells any intermediary such as a proxy or cache server to not make any modifications whatsoever to the original asset.
+
+### 2. Pragma
+
+The old `Pragma` header accomplishes many things characterized by newer implementations. We are most concerned with the `Pragma: no-cache` directive which is interpreted by newer implementations as `Cache-Control: no-cache`.
+
+### 3. Expires
+
+![expires header](blog/expires-header.png)
+
+`Expires` is simply a basic date-time stamp. It's useful for old user agents which still roam unchartered territories.
+
+```none
+Expires: Sun, 03 May 2015 23:02:37 GMT
+```
+
+To avoid breaking the specification, avoid setting the date value to more than a year.
+
+### 4. Validators
+
+#### ETag
+
+![etag header](blog/etag-header.png)
+
+This type of validation token (the standard in HTTP/1.1) enables efficient resource updates where no data is transferred if the resource doesn't change.
+
+Validation tokens are solving the problem of unnecessary downloads: the edge server creates and returns arbitrary tokens, that are stored in the `ETag` header field, which are typically a hash or other fingerprints of content of existing files.
+
+The web browser provides the `ETag` token automatically within the `If-None-Match` HTTP request header. The server then checks tokens against current assets in the cache.
+
+#### Last-Modified
+
+![last modified header](blog/last-modified-header.png)
+
+The `Last-Modified` header indicates the time a document last changed which is the most common validator.
+
+### 5. Extension Cache-Control directives
+
+Immutable and stale directives can be used as extensions to Cache-Control to improve user experience.
+
+#### immutable
+
+No conditional revalidation will be triggered even if the user explicitly refreshes a page.
+
+#### stale-while-revalidate
+
+![stale while revalidate explained](blog/stale-while-revalidate-explained-1.png)
+
+The `stale-while-revalidate` directive allows for a stale asset to be served while it is revalidated in the background.
+
+```none
+Cache-Control: max-age=2592000, stale-while-revalidate=86400
+```
+
+#### stale-if-error
+
+![stale if error explained](blog/stale-if-error-explained.png)
+
+The `stale-if-error` directive serves stale content when the `max-age` expires, if the origin server returns an error code.
+
+## KeyCDN and HTTP cache headers
+
+At KeyCDN, you can define HTTP cache headers and control how assets are cached and served. If you need more control, you can disable the Ignore Cache Control feature in your Zone settings and have KeyCDN honor all of your cache headers from the origin.
+
+The `Cache-Control` (in particular), along with the `ETag` header field are modern mechanisms to control freshness and validity of your assets.
+
+## Conclusion
+
+HTTP cache headers are an important tool for improving website performance and reducing server load. By properly configuring cache headers, you can ensure that your files are cached and served efficiently, without sacrificing freshness or reliability.
+
+Do you have any thoughts on using HTTP cache headers?
+

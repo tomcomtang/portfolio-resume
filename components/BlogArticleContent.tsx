@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "@/components/useLanguage";
 import { loadMarkdownOptional } from "@/utilities/markdown-load-optional";
 import type { ArticleMetadata } from "@/types";
 import { ArticleHeader } from "@/components/ArticleHeader";
-import { useFadeIn } from "@/components/BentoItem";
 
 type LoadedMarkdown = {
   Content: React.FC;
@@ -21,10 +20,48 @@ function BlogArticleContentBody({
   language: "en" | "zh";
   Content: React.FC;
 }) {
-  const fadeIn = useFadeIn();
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  const HIDDEN_STYLE: React.CSSProperties = {
+    opacity: 0,
+    transitionProperty: "all",
+    transform: "translateY(1rem) skewY(1deg) scale(0.98)",
+    transformOrigin: "top",
+  };
+
+  const [style, setStyle] = useState<React.CSSProperties | undefined>(
+    typeof document !== "undefined" && document.documentElement.dataset.animate
+      ? HIDDEN_STYLE
+      : undefined
+  );
+
+  useEffect(() => {
+    if (!ref.current) return;
+    if (!document.documentElement.dataset.animate) return;
+
+    // Use the element position to compute a slightly varied duration,
+    // matching the project's `useFadeIn` behavior.
+    const transitionDuration =
+      500 +
+      (ref.current.getBoundingClientRect().top / window.innerHeight) * 500 +
+      (ref.current.getBoundingClientRect().left / window.innerWidth) * 500;
+
+    setStyle((prev) => ({
+      ...(prev ?? HIDDEN_STYLE),
+      opacity: 1,
+      transitionDuration: transitionDuration + "ms",
+      transform: "none",
+    }));
+
+    const handle = window.setTimeout(() => {
+      setStyle(undefined);
+    }, transitionDuration);
+
+    return () => window.clearTimeout(handle);
+  }, [metadata, language, Content]);
 
   return (
-    <div ref={fadeIn.ref} style={fadeIn.style}>
+    <div ref={ref} style={style}>
       <ArticleHeader metadata={metadata} language={language} />
       <Content />
     </div>

@@ -1,17 +1,54 @@
+// MDX images are dynamically imported from `assets/images/*`.
+// This file must support rendering inside Client Components, so the `img`
+// renderer cannot be an `async function` component.
+"use client";
+
 import type { MDXComponents } from "mdx/types";
 import NextImage from "next/image";
+import { useEffect, useMemo, useState } from "react";
 import { Heading } from "./components/Heading";
 import { Link } from "./components/Link";
 import { twMerge } from "tailwind-merge";
 
-async function Image({
+function Image({
   src: path,
   title: maxWidth,
   className,
   ...properties
 }: JSX.IntrinsicElements["img"]) {
-  const image = await import(`@/assets/images/${path}`);
-  const { src, height, width } = image.default;
+  const imagePath = useMemo(() => String(path), [path]);
+
+  const [imageModule, setImageModule] = useState<{
+    src: string;
+    height: number;
+    width: number;
+  } | null>(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    setImageModule(null);
+
+    (async () => {
+      try {
+        const image = await import(
+          // webpackInclude: /\.mdx$|\.png$|\.jpg$|\.jpeg$|\.webp$|\.gif$|\.svg$/
+          `@/assets/images/${imagePath}`
+        );
+        if (cancelled) return;
+        setImageModule(image.default as any);
+      } catch {
+        // Keep blank if the image can't be resolved.
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [imagePath]);
+
+  if (!imageModule) return null;
+
+  const { src, height, width } = imageModule;
 
   return (
     // @ts-ignore

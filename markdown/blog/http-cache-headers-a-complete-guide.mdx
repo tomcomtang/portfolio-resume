@@ -1,113 +1,116 @@
 export const metadata = {
   title: "HTTP Cache Headers - A Complete Guide",
+  titleZh: "HTTP 缓存头：完整指南",
   date: "2023-11-16",
   description:
     "As a website owner, you want your website to be fast, efficient, and accessible to as many users as possible. One of the best ways to achieve this is by using HTTP caching headers.",
+  descriptionZh:
+    "作为网站所有者，你希望网站快速、高效，并尽可能让更多用户能够访问。实现这一点的一个最佳方式就是使用 HTTP 缓存头。",
 };
 
-![HTTP Cache Headers - A Complete Guide](blog/http-cache-headers.png)
+![HTTP 缓存头：完整指南](blog/http-cache-headers.png)
 
-As a website owner, you want your website to be fast, efficient, and accessible to as many users as possible. One of the best ways to achieve this is by using HTTP caching headers. These headers tell web browsers and other HTTP clients how to cache and serve content from your website.
+作为网站所有者，你希望网站能够快速、高效，并尽可能让更多用户顺畅访问。实现这一点的最佳方式之一就是使用 HTTP 缓存头。这些头会告诉浏览器以及其他 HTTP 客户端：如何缓存你的网站内容、以及如何在之后的请求中提供这些内容。
 
-This article highlights important information on HTTP caching headers and associated CDN behavior. In case you are looking for in-depth information on the role of HTTP cache headers in the modern web, here's everything you need to know.
+本文将重点梳理 HTTP 缓存头的关键知识，以及与 CDN 行为相关的重要信息。如果你想深入了解 HTTP 缓存头在现代 Web 中的作用，那么下面就是你需要知道的全部内容。
 
-## How caching works
+## 缓存是如何工作的
 
-When a browser requests a file from a server, the server responds with the file and some cache headers. The browser then caches the file based on these headers. The next time the browser requests the same file, it checks its cache to see if it already has a copy.
+当浏览器向服务器请求某个文件时，服务器会返回该文件以及一些缓存头。浏览器会根据这些缓存头来决定如何缓存文件。下一次当浏览器再次请求同一个文件时，它会先检查自己的缓存中是否已经有一份副本。
 
-If it does, and the file hasn't expired, the browser serves the cached version of the file. If the file has expired or if the browser has been told not to cache it, the browser requests a fresh copy of the file from the server.
+如果有，并且文件还没有过期，浏览器就会直接提供缓存中的版本。如果文件已过期，或浏览器被告知不要缓存该文件，那么浏览器就会向服务器请求一个新的副本。
 
-Caching works differently depending on the type of cache being used. There are two main types of caches: browser caches and CDN caches.
+缓存机制会根据你所使用的缓存类型不同而表现不同。常见的两大类型是：浏览器缓存和 CDN 缓存。
 
-### Browser caches
+### 浏览器缓存
 
-Browser caches are local caches that are used by web browsers to store copies of files. When a browser requests a file, it first checks its local cache to see if it already has a copy. If it does, and the file hasn't expired, the browser serves the cached version. If the file has expired, or if the browser has been told not to cache it, the browser requests a fresh copy of the file from the server.
+浏览器缓存是本地缓存，浏览器会用它来存储文件的副本。当浏览器请求某个文件时，它会先检查本地缓存中是否已存在该文件的副本。如果存在且尚未过期，浏览器就会提供缓存版本；如果文件已过期，或浏览器被告知不要缓存，那么它就会向服务器请求新的副本。
 
-### CDN caches
+### CDN 缓存
 
-[CDN](https://www.keycdn.com/what-is-a-cdn) caches are distributed caches that are used by Content Delivery Networks (CDNs) to store copies of files. When a browser requests a file from a website that is using a CDN, the request is sent to the CDN instead of the origin server.
+[CDN](https://www.keycdn.com/what-is-a-cdn) 缓存是由内容分发网络（CDN）提供的分布式缓存，用来存储文件副本。当浏览器向使用了 CDN 的网站请求资源时，请求会被转发到 CDN，而不是直接访问源站服务器。
 
-If the CDN has a cached copy of the file, it serves it directly to the browser. This can greatly reduce the amount of time and resources needed to load the file, as the request doesn't need to travel all the way to the origin server.
+如果 CDN 中存在该文件的缓存副本，它会直接把内容返回给浏览器。这样可以显著减少加载资源所需的时间与消耗，因为请求不必一路到达源站。
 
-CDN caches can be configured in a number of different ways, depending on the needs of the website. Some CDNs use a "pull" model, where the CDN only caches files when they are requested by a browser. Other CDNs use a "push" model, where the origin server sends files to the CDN proactively before they are requested by a browser.
+CDN 缓存可以根据网站需求以多种方式进行配置。有些 CDN 采用“拉取（pull）”模式：只有当浏览器发起请求时，CDN 才会缓存对应的文件；也有些 CDN 采用“推送（push）”模式：源站会在资源被请求之前主动把文件发送到 CDN。
 
-## What are HTTP cache headers?
+## 什么是 HTTP 缓存头？
 
-HTTP cache headers are instructions that web servers send to web browsers, telling them how to cache and serve content. These headers are sent with every HTTP request and response. They can be used to control how frequently a browser caches a file, how long the cache should keep the file, and what should be done when the file is expired.
+HTTP 缓存头是 Web 服务器发给浏览器的指令，用来说明如何缓存以及如何提供内容。这些头会随每一次 HTTP 请求与响应一起发送。它们可以用来控制：浏览器缓存文件的频率、缓存应该保存多久，以及当文件过期时应该怎么处理。
 
-HTTP cache headers are important because they help reduce the amount of time and resources needed to load a web page. By caching content, a browser can serve it more quickly without having to request it from the server every time a user visits the page. This can improve website performance, reduce server load, and improve the overall user experience.
+HTTP 缓存头之所以重要，是因为它能帮助减少加载网页所需的时间与资源成本。通过缓存内容，浏览器可以在用户再次访问时更快地提供内容，而不必每次都向服务器重新请求。这样不仅能提升网站性能，还能降低服务器压力，并改善整体用户体验。
 
-## Types of HTTP cache headers
+## HTTP 缓存头的类型
 
-Caches work with content mainly through freshness and validation. A fresh representation is available instantly from a cache while a validated representation rarely sends the entire representation again if it hasn't changed.
+缓存主要通过“新鲜度（freshness）”与“校验（validation）”来与内容协作。一个“新鲜”的表示可以从缓存中立即获得；而当缓存表示需要被校验时，如果内容没有发生变化，通常就不会再重新传输整个表示。
 
-In cases where there is no validator present (e.g. `ETag` or `Last-Modified` header), and a lack of explicit freshness info, it will usually (but not always) be considered uncacheable. Let's shift our focus to the kind of headers you should be concerned about.
+在某些情况下，如果没有校验器（例如 `ETag` 或 `Last-Modified` 头），并且也缺乏明确的新鲜度信息，那么它通常（但不总是）会被视为不可缓存。下面我们把重点转向你需要真正关注的那些缓存相关头。
 
 ### 1. Cache-Control
 
-Every resource can define its own caching policy via the `Cache-Control` HTTP header. Cache-Control directives control who caches the response, under what conditions and for how long.
+每个资源都可以通过 `Cache-Control` HTTP 头来定义自身的缓存策略。`Cache-Control` 指令会控制：由谁来缓存响应、在什么条件下缓存、以及缓存持续多久。
 
 ![cache control header](blog/cache-control-header.png)
 
-Requests that don't need server communication are considered the best requests: local copies of the responses allow the elimination of network latency as well as data charges resulting from data transfers.
+不需要与服务器通信的请求通常是最佳的：本地缓存响应的副本可以消除网络延迟，并减少由于数据传输带来的数据费用。
 
-The HTTP specification enables the server to send several different Cache-Control directives which control how and for how long individual responses are cached by browsers among other intermediate caches such as a CDN.
+HTTP 规范允许服务器发送多种不同的 `Cache-Control` 指令，它们会控制浏览器以及像 CDN 这样的中间缓存如何缓存单个响应、缓存多长时间。
 
 ```none
 Cache-Control: private, max-age=0, no-cache
 ```
 
-These settings are referred to as response directives. They are as follows:
+这些设置被称为“响应指令（response directives）”。主要包括：
 
 ### public vs private
 
-A response that is marked `public` can be cached even in cases where it is associated with an HTTP authentication or the HTTP response status code is not cacheable normally. In most cases, a response marked `public` isn't necessary, since explicit caching information (e.g. `max-age`) shows that a response is cacheable anyway.
+标记为 `public` 的响应即使在与 HTTP 认证相关的情况下，或响应状态码通常不可缓存时，也仍然可以被缓存。大多数情况下，并不需要显式设置 `public`：因为当你已经通过诸如 `max-age` 这类信息明确表明该响应可缓存时，浏览器本来就会认为它可缓存。
 
-On the contrary, a response marked `private` can be cached (by the browser) but such responses are typically intended for single users hence they aren't cacheable by intermediate caches (e.g. HTML pages with private user info can be cached by a user's browser but not by a CDN).
+相反，标记为 `private` 的响应可以被浏览器缓存，但这类响应通常面向单个用户，因此一般不应被中间缓存缓存（例如：包含私有用户信息的 HTML 页面可以被用户的浏览器缓存，但通常不应由 CDN 缓存）。
 
 ### no-cache and no-store
 
 ![no-cache header](blog/no-cache-header.png)
 
-`no-cache` shows that returned responses can't be used for subsequent requests to the same URL before checking if server responses have changed. If a proper `ETag` (validation token) is present as a result, `no-cache` incurs a roundtrip in an effort to validate cached responses.
+`no-cache` 的含义是：在确认服务器响应是否发生变化之前，返回的响应不能用于对同一 URL 的后续请求。如果返回结果里带有合适的 `ETag`（校验令牌），那么 `no-cache` 会在验证缓存响应时产生一次往返请求（roundtrip）。
 
-On the contrary, `no-store` is simpler. This is the case because it disallows browsers and all intermediate caches from storing any versions of returned responses, such as responses containing private/personal information or banking data. Every time users request this asset, requests are sent to the server.
+与之相对，`no-store` 更简单。因为它会禁止浏览器以及所有中间缓存存储任何版本的响应；例如包含私密/个人信息或银行数据的响应。每次用户请求该资源时，都会把请求发送给服务器。
 
 ### max-age
 
-The `max-age` directive states the maximum amount of time in seconds that fetched responses are allowed to be used again (from the time when a request is made).
+`max-age` 指令表示：从请求发起的时刻开始，所获取的响应允许被再次使用的最长时间（单位为秒）。
 
 ### s-maxage
 
-The "s-" stands for shared as in shared cache. This directive is explicitly for CDNs among other intermediary caches. This directive overrides the `max-age` directive and expires the header field when present.
+其中 `s-` 表示共享缓存（shared cache）。该指令明确面向 CDN 以及其它中间缓存。当存在 `s-maxage` 时，它会覆盖 `max-age`，并在相应时间后使该头字段过期。
 
 ### must-revalidate
 
-The `must-revalidate` directive is used to tell a cache that it must first revalidate an asset with the origin after it becomes stale.
+`must-revalidate` 指令用于告诉缓存：一旦资源变得陈旧（stale），缓存必须先向源站进行重新校验。
 
 ### proxy-revalidate
 
-The `proxy-revalidate` directive is the same as the `must-revalidate` directive, however it only applies to shared caches such as proxies.
+`proxy-revalidate` 的含义与 `must-revalidate` 类似，但它仅适用于共享缓存（例如代理）。
 
 ### no-transform
 
-The `no-transform` directive tells any intermediary such as a proxy or cache server to not make any modifications whatsoever to the original asset.
+`no-transform` 指令会告诉任何中间节点（例如代理或缓存服务器）不要对原始资源做任何改动。
 
 ### 2. Pragma
 
-The old `Pragma` header accomplishes many things characterized by newer implementations. We are most concerned with the `Pragma: no-cache` directive which is interpreted by newer implementations as `Cache-Control: no-cache`.
+旧的 `Pragma` 头包含了很多旧实现与新实现的共同特征。我们最关注的是 `Pragma: no-cache`：在较新的实现中，它会被解释为 `Cache-Control: no-cache`。
 
 ### 3. Expires
 
 ![expires header](blog/expires-header.png)
 
-`Expires` is simply a basic date-time stamp. It's useful for old user agents which still roam unchartered territories.
+`Expires` 本质上就是一个基础的日期时间戳。它常用于兼容那些仍在“未覆盖区域”里游走的老旧用户代理。
 
 ```none
 Expires: Sun, 03 May 2015 23:02:37 GMT
 ```
 
-To avoid breaking the specification, avoid setting the date value to more than a year.
+为了避免破坏规范，日期值不要设置得超过一年。
 
 ### 4. Validators
 
@@ -115,31 +118,31 @@ To avoid breaking the specification, avoid setting the date value to more than a
 
 ![etag header](blog/etag-header.png)
 
-This type of validation token (the standard in HTTP/1.1) enables efficient resource updates where no data is transferred if the resource doesn't change.
+这种校验令牌（HTTP/1.1 的标准方式）可以实现高效的资源更新：当资源没有发生变化时，就不会传输任何数据。
 
-Validation tokens are solving the problem of unnecessary downloads: the edge server creates and returns arbitrary tokens, that are stored in the `ETag` header field, which are typically a hash or other fingerprints of content of existing files.
+校验令牌解决了“不必要下载”的问题：边缘服务器会生成并返回任意令牌，然后把它们存储在 `ETag` 头字段中。通常这些令牌是现有文件内容的哈希或其它指纹。
 
-The web browser provides the `ETag` token automatically within the `If-None-Match` HTTP request header. The server then checks tokens against current assets in the cache.
+浏览器会在 `If-None-Match` HTTP 请求头里自动带上 `ETag` 令牌。服务器随后会把令牌与缓存里的当前资源进行比对校验。
 
 #### Last-Modified
 
 ![last modified header](blog/last-modified-header.png)
 
-The `Last-Modified` header indicates the time a document last changed which is the most common validator.
+`Last-Modified` 头会告诉你文档上一次发生变化的时间，它也是最常见的校验器之一。
 
 ### 5. Extension Cache-Control directives
 
-Immutable and stale directives can be used as extensions to Cache-Control to improve user experience.
+`immutable` 与一些陈旧内容相关指令可以作为 `Cache-Control` 的扩展，用来改善用户体验。
 
 #### immutable
 
-No conditional revalidation will be triggered even if the user explicitly refreshes a page.
+即使用户明确刷新页面，也不会触发条件重新校验（conditional revalidation）。
 
 #### stale-while-revalidate
 
 ![stale while revalidate explained](blog/stale-while-revalidate-explained-1.png)
 
-The `stale-while-revalidate` directive allows for a stale asset to be served while it is revalidated in the background.
+`stale-while-revalidate` 允许在后台进行重新校验的同时，先把“陈旧（stale）”的资源提供给用户。
 
 ```none
 Cache-Control: max-age=2592000, stale-while-revalidate=86400
@@ -149,17 +152,17 @@ Cache-Control: max-age=2592000, stale-while-revalidate=86400
 
 ![stale if error explained](blog/stale-if-error-explained.png)
 
-The `stale-if-error` directive serves stale content when the `max-age` expires, if the origin server returns an error code.
+当 `max-age` 过期后，如果源站返回错误码，那么 `stale-if-error` 会继续向用户提供陈旧内容（stale content）。
 
-## KeyCDN and HTTP cache headers
+## KeyCDN 与 HTTP 缓存头
 
-At KeyCDN, you can define HTTP cache headers and control how assets are cached and served. If you need more control, you can disable the Ignore Cache Control feature in your Zone settings and have KeyCDN honor all of your cache headers from the origin.
+在 KeyCDN，你可以定义 HTTP 缓存头，并控制资源如何被缓存与提供。如果你需要更细的控制，可以在 Zone 设置里关闭 “Ignore Cache Control（忽略缓存控制）” 功能，让 KeyCDN 在提供资源时尊重源站发送的所有缓存头。
 
-The `Cache-Control` (in particular), along with the `ETag` header field are modern mechanisms to control freshness and validity of your assets.
+特别是 `Cache-Control`（以及 `ETag` 头字段）属于现代化的机制：它们用于控制你资源的“新鲜度”和“有效性（validity）”。
 
-## Conclusion
+## 结论
 
-HTTP cache headers are an important tool for improving website performance and reducing server load. By properly configuring cache headers, you can ensure that your files are cached and served efficiently, without sacrificing freshness or reliability.
+HTTP 缓存头是提升网站性能、降低服务器负载的重要工具。只要你正确配置缓存头，就能确保文件被高效缓存与提供，同时又不牺牲新鲜度与可靠性。
 
-Do you have any thoughts on using HTTP cache headers?
+你对使用 HTTP 缓存头有什么想法吗？
 
