@@ -4,8 +4,9 @@ import { Container } from "./Container";
 import { EnvelopeIcon } from "@heroicons/react/24/solid";
 import { ViewCounter } from "./ViewCounter";
 import { Heading2, Paragraph } from "@/mdx-components";
-import { Input } from "./Input";
 import { Button } from "./Button";
+import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 const navigation = [
   {
@@ -44,59 +45,210 @@ export function Footer(properties: FooterProperties) {
     document.documentElement.scrollTo(0, document.documentElement.scrollHeight);
   };
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [tip, setTip] = useState<{
+    kind: "idle" | "success" | "error";
+    visible: boolean;
+    message: string;
+  }>({ kind: "idle", visible: false, message: "" });
+
+  const fadeTimerRef = useRef<number | null>(null);
+  const hideTimerRef = useRef<number | null>(null);
+
+  const showTip = (kind: "success" | "error", message: string) => {
+    if (fadeTimerRef.current) window.clearTimeout(fadeTimerRef.current);
+    if (hideTimerRef.current) window.clearTimeout(hideTimerRef.current);
+
+    setTip({ kind, visible: true, message });
+
+    fadeTimerRef.current = window.setTimeout(() => {
+      setTip((prev) =>
+        prev.kind === "idle" ? prev : { ...prev, visible: false }
+      );
+    }, 3800);
+
+    hideTimerRef.current = window.setTimeout(() => {
+      setTip({ kind: "idle", visible: false, message: "" });
+    }, 4600);
+  };
+
   return (
-    <footer onFocus={scrollToBottom} {...properties}>
-      <Container className="pb-8 px-6 sm:px-8 md:px-10 lg:px-12">
-        <div className="py-16 sm:py-24 text-center flex flex-col items-center bg-radial-gradient-t from-sky-900 to-transparent">
-          <Heading2 className="text-4xl/tight sm:text-5xl/tight tracking-wide">
-            <span className="hidden sm:inline-block md:skew-y-6 origin-right">
-              Subscribe to
-            </span>{" "}
-            My Newsletter
-          </Heading2>
-          <Paragraph className="max-w-xl">
-            Sign up to receive my very irregular newsletter including updates on
-            new blog posts, projects I&rsquo;m working on and exclusive content.
-          </Paragraph>
+    <>
+      <footer onFocus={scrollToBottom} {...properties}>
+        <Container className="pb-8 px-6 sm:px-8 md:px-10 lg:px-12">
+          <div className="py-16 sm:py-24 text-center flex flex-col items-center bg-radial-gradient-t from-sky-900 to-transparent">
+            <Heading2 className="text-4xl/tight sm:text-5xl/tight tracking-wide">
+              <span className="hidden sm:inline-block md:skew-y-6 origin-right">
+                Hiring
+              </span>{" "}
+              & Collaboration
+            </Heading2>
+            <Paragraph className="max-w-xl">
+              If you’d like to hire me, share your email below and I’ll follow up.
+              You’ll also get occasional updates on new blog posts and selected projects.
+            </Paragraph>
           <form
-            action="https://app.convertkit.com/forms/5075878/subscriptions"
-            className="mt-8 w-full max-w-xl flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 md:space-x-6 items-stretch"
+            action="/api/notion/subscribe"
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setIsSubmitting(true);
+
+              const formData = new FormData(e.currentTarget);
+              // Unique id for this submission (also stored into Notion).
+              const requestId =
+                typeof crypto !== "undefined" && crypto.randomUUID
+                  ? crypto.randomUUID()
+                  : String(Date.now()) + "-" + String(Math.random());
+              formData.set("id", requestId);
+
+              const email = formData.get("email_address")?.toString().trim();
+              if (!email) {
+                showTip("error", "Please enter your email address.");
+                setIsSubmitting(false);
+                return;
+              }
+
+              if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                showTip("error", "Please enter a valid email address.");
+                setIsSubmitting(false);
+                return;
+              }
+
+              const message = formData.get("message")?.toString().trim();
+              if (!message) {
+                showTip("error", "Please leave a message.");
+                setIsSubmitting(false);
+                return;
+              }
+
+              try {
+                const res = await fetch("/api/notion/subscribe", {
+                  method: "POST",
+                  body: formData,
+                });
+
+                const json = (await res.json().catch(() => null)) as
+                  | { ok?: boolean; error?: string }
+                  | null;
+
+                if (res.ok && json?.ok) {
+                  showTip(
+                    "success",
+                    "Submitted successfully. I’ll contact you via email."
+                  );
+                } else {
+                  showTip(
+                    "error",
+                    json?.error ?? "Submit failed. Please try again."
+                  );
+                }
+              } catch {
+                showTip("error", "Submit failed. Please try again.");
+              } finally {
+                setIsSubmitting(false);
+              }
+            }}
+            className="mt-8 w-full max-w-xl border border-white/10 bg-[radial-gradient(100%_57.65%_at_0%_54.86%,_#0B4A6B_0%,_#0F2A3A_45%,_rgba(11,74,107,0)_100%)] rounded-[1.5rem] px-5 py-7 sm:px-10 sm:py-10 flex flex-col space-y-3"
             method="POST"
           >
-            <Input
-              aria-label="Email address"
-              className="flex-grow"
-              name="email_address"
-              placeholder="Email address"
-              required
-              type="email"
-            />
-            <Button className="shadow-xl shadow-sky-800/50" type="submit">
-              Subscribe
-            </Button>
-          </form>
-        </div>
-        <div className="flex flex-wrap items-center justify-between space-y-8 sm:space-y-0">
-          <div className="w-full sm:w-auto flex space-x-6 sm:order-3">
-            {navigation.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-slate-400 hover:text-slate-500"
+            <label className="relative block">
+              <span className="sr-only">Your email here</span>
+              <input
+                type="email"
+                name="email_address"
+                placeholder="Your email here"
+                className="text-lg leading-[1.2] border border-white/15 rounded-2xl w-full transition-colors px-5 py-3 sm:py-3.5 placeholder:opacity-60 hover:border-white focus:border-white focus:outline-none pr-[110px] bg-transparent text-white"
+              />
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className={[
+                  "absolute right-2 top-2 bottom-2 cursor-pointer text-sm leading-none rounded-full px-4 font-medium",
+                  "bg-slate-800/70 hover:bg-slate-700/70 active:bg-slate-700/60",
+                  "border border-white/10",
+                  "text-slate-100",
+                  "disabled:opacity-70 disabled:cursor-default",
+                ].join(" ")}
               >
-                <span className="sr-only">{item.name}</span>
-                <item.icon className="h-6 w-6" aria-hidden="true" />
-              </a>
-            ))}
+                {isSubmitting ? (
+                  <svg
+                    className="h-4 w-4 animate-spin mx-auto"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <circle
+                      className="opacity-25"
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                    />
+                    <path
+                      className="opacity-90"
+                      d="M22 12c0-5.523-4.477-10-10-10"
+                      stroke="currentColor"
+                      strokeWidth="4"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                ) : (
+                  "Submit"
+                )}
+              </button>
+            </label>
+
+            <textarea
+              aria-label="Message"
+              name="message"
+              placeholder="Message"
+              maxLength={2000}
+              className="w-full appearance-none bg-transparent text-white rounded-2xl px-5 py-3 border border-white/15 placeholder:text-slate-400 focus:outline-none focus:ring-0 focus:border-white min-h-[96px] resize-y"
+            />
+          </form>
           </div>
-          <p className="text-slate-500 sm:order-1">
-            &copy; {new Date().getFullYear()} Greg Ives
-          </p>
-          <p className="text-slate-500 sm:order-2">
-            <ViewCounter increment />
-          </p>
-        </div>
-      </Container>
-    </footer>
+          <div className="flex flex-wrap items-center justify-between space-y-8 sm:space-y-0">
+            <div className="w-full sm:w-auto flex space-x-6 sm:order-3">
+              {navigation.map((item) => (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className="text-slate-400 hover:text-slate-500"
+                >
+                  <span className="sr-only">{item.name}</span>
+                  <item.icon className="h-6 w-6" aria-hidden="true" />
+                </a>
+              ))}
+            </div>
+            <p className="text-slate-500 sm:order-1">
+              &copy; {new Date().getFullYear()} Greg Ives
+            </p>
+            <p className="text-slate-500 sm:order-2">
+              <ViewCounter increment />
+            </p>
+          </div>
+        </Container>
+      </footer>
+
+      {tip.kind !== "idle" &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <div
+            role="status"
+            aria-live="polite"
+            className={[
+              "fixed bottom-5 left-1/2 -translate-x-1/2 z-[9999] pointer-events-none px-4 py-3 rounded-xl border shadow-2xl backdrop-blur supports-[backdrop-filter]:bg-opacity-20",
+              tip.kind === "success"
+                ? "bg-gradient-to-r from-emerald-500/95 to-emerald-700/95 border-emerald-200/70 text-white font-semibold"
+                : "bg-gradient-to-r from-rose-500/95 to-rose-700/95 border-rose-200/70 text-white font-semibold",
+              "transition-opacity duration-500",
+              tip.visible ? "opacity-100" : "opacity-0",
+            ].join(" ")}
+          >
+          {tip.message}
+          </div>,
+          document.body
+        )}
+    </>
   );
 }
