@@ -54,6 +54,8 @@ export function TencentMylesCarousel() {
               alt=""
               aria-hidden="true"
               fill
+              quality={45}
+              loading="lazy"
               className="object-cover object-top -translate-y-1 scale-110 blur-xl opacity-65"
               sizes="(min-width: 640px) 50vw, 100vw"
             />
@@ -61,6 +63,8 @@ export function TencentMylesCarousel() {
               src={image}
               alt="Tencent team photo background"
               fill
+              quality={45}
+              loading="lazy"
               className="object-cover object-top -translate-y-1 mix-blend-luminosity"
               sizes="(min-width: 640px) 50vw, 100vw"
             />

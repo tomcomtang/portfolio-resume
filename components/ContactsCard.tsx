@@ -46,8 +46,9 @@ export function ContactsCard() {
         <Image
           src={tencentImage}
           alt="Tencent team photo"
-          priority
           fill
+          quality={60}
+          loading="lazy"
           className="object-contain object-[87%_top] mix-blend-luminosity scale-90 blur-[0.5px]"
           sizes="(min-width: 768px) 33.3333vw, 50vw"
         />

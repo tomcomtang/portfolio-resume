@@ -88,6 +88,8 @@ export function ProfileProjectCard({
             src={backgroundImage}
             alt={projectKey === "timmerse" ? "TRTC showroom preview" : "Tencent Cloud console preview"}
             fill
+            quality={60}
+            loading="lazy"
             className="object-cover object-top mix-blend-luminosity opacity-15"
             sizes="(min-width: 640px) 50vw, 100vw"
           />
