@@ -79,6 +79,13 @@ export function ProfileProjectCard({
           : null;
   const hasBackground = backgroundImage !== null;
 
+  const projectAnchorId =
+    projectKey === "tencent-console"
+      ? "cloud-config"
+      : projectKey === "timmerse"
+        ? "timmerse"
+        : "edgeone-pages";
+
   return (
     <BentoItem className={twMerge(className, hasBackground && "overflow-hidden")}>
       <Badge>Featured</Badge>
@@ -109,8 +116,7 @@ export function ProfileProjectCard({
       <div className="relative z-10">
         <Heading2 link className="relative">
           <Link
-            href={COPY.en[projectKey].href}
-            target="_blank"
+            href={`/projects#${projectAnchorId}`}
             className="dock-hover relative block w-full"
           >
             {showZh ? COPY.zh[projectKey].title : COPY.en[projectKey].title}

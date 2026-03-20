@@ -66,7 +66,7 @@ export function Footer(properties: FooterProperties) {
     zh: {
       heading: "招聘与合作",
       paragraph:
-        "如果你想雇佣我，请在下方填写你的邮箱，我会尽快回复你。你也会收到关于新博客文章以及精选项目的少量更新。",
+        "如果你想聘用我，请在下方填写你的邮箱，我会尽快回复你。期待您的来信和交流，谢谢您的关注。",
       formEmailAria: "你的邮箱",
       formMessageAria: "你的留言",
       emailPlaceholder: "邮箱地址",
@@ -128,21 +128,23 @@ export function Footer(properties: FooterProperties) {
                 <>
                   <span className="hidden sm:inline-block md:skew-y-6 origin-right">
                     Hiring
-                  </span>{" "}
-                  & Collaboration
-                </>
+                  </span>
+                  <span className="hidden sm:inline-block">&nbsp;&amp;&nbsp;</span>
+                  <span>Collaboration</span>               </>
               )}
             </Heading2>
             <Paragraph className="max-w-xl">
               {t.paragraph}
             </Paragraph>
           <form
-            action="/api/notion/subscribe"
             onSubmit={async (e) => {
               e.preventDefault();
               setIsSubmitting(true);
 
-              const formData = new FormData(e.currentTarget);
+              // Cache the form element immediately.
+              // After `await`, React's SyntheticEvent fields may become null.
+              const formEl = e.currentTarget;
+              const formData = new FormData(formEl);
               // Unique id for this submission (also stored into Notion).
               const requestId =
                 typeof crypto !== "undefined" && crypto.randomUUID
@@ -176,24 +178,37 @@ export function Footer(properties: FooterProperties) {
                   body: formData,
                 });
 
-                const json = (await res.json().catch(() => null)) as
-                  | { ok?: boolean; error?: string }
-                  | null;
+                const rawText = await res.text().catch(() => null);
+                let json: { ok?: boolean; error?: string } | null = null;
+                if (rawText) {
+                  try {
+                    json = JSON.parse(rawText) as
+                      | { ok?: boolean; error?: string }
+                      | null;
+                  } catch {
+                    json = null;
+                  }
+                }
 
-                if (res.ok && json?.ok) {
+                // 成功判定优先看响应体中的 json.ok === true，
+                // 避免出现 HTTP 状态与 body 不一致/解析时序导致误判。
+                const okFlag = json?.ok;
+                const isSuccess =
+                  okFlag === true || res.ok === true;
+                if (isSuccess) {
                   showTip(
                     "success",
                     t.success
                   );
                   // Clear form on success.
-                  e.currentTarget.reset();
+                  formEl?.reset();
                 } else {
                   showTip(
                     "error",
                     json?.error ?? t.errors.submitFailed
                   );
                 }
-              } catch {
+              } catch (err) {
                 showTip("error", t.closeTipsError);
               } finally {
                 setIsSubmitting(false);

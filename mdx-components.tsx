@@ -1,73 +1,11 @@
-// MDX images are dynamically imported from `assets/images/*`.
-// This file must support rendering inside Client Components, so the `img`
-// renderer cannot be an `async function` component.
-"use client";
-
+// MDX components mapping.
+// 说明：MDXImage 的动态导入与 hook 逻辑放在 `mdx-image.tsx`（client 组件）里，
+// 这里保持为非 client 模块，避免影响 prerender / subscribed 构建。
 import type { MDXComponents } from "mdx/types";
-import NextImage from "next/image";
-import { useEffect, useMemo, useState } from "react";
 import { Heading } from "./components/Heading";
 import { Link } from "./components/Link";
 import { twMerge } from "tailwind-merge";
-
-function Image({
-  src: path,
-  title: maxWidth,
-  className,
-  ...properties
-}: JSX.IntrinsicElements["img"]) {
-  const imagePath = useMemo(() => String(path), [path]);
-
-  const [imageModule, setImageModule] = useState<{
-    src: string;
-    height: number;
-    width: number;
-  } | null>(null);
-
-  useEffect(() => {
-    let cancelled = false;
-    setImageModule(null);
-
-    (async () => {
-      try {
-        const image = await import(
-          // webpackInclude: /\.mdx$|\.png$|\.jpg$|\.jpeg$|\.webp$|\.gif$|\.svg$/
-          `@/assets/images/${imagePath}`
-        );
-        if (cancelled) return;
-        setImageModule(image.default as any);
-      } catch {
-        // Keep blank if the image can't be resolved.
-      }
-    })();
-
-    return () => {
-      cancelled = true;
-    };
-  }, [imagePath]);
-
-  if (!imageModule) return null;
-
-  const { src, height, width } = imageModule;
-
-  return (
-    // @ts-ignore
-    <NextImage
-      {...properties}
-      src={src}
-      height={height}
-      width={width}
-      sizes="(min-width: 640px) 66.6666vw, 100vw"
-      className={twMerge(
-        "my-4 w-full max-h-[60svh] object-contain object-left drop-shadow-md dark:brightness-90",
-        className
-      )}
-      style={{
-        maxWidth,
-      }}
-    />
-  );
-}
+import { MDXImage } from "./mdx-image";
 
 export function Heading1({
   className,
@@ -218,7 +156,7 @@ export function Blockquote({
 export function useMDXComponents(components: MDXComponents): MDXComponents {
   return {
     ...components,
-    img: Image,
+    img: MDXImage,
     h1: Heading1,
     h2: Heading2,
     h3: Heading3,

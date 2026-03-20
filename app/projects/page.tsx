@@ -3,6 +3,7 @@ import { Project } from "@/components/Project";
 import { Badge } from "@/components/Badge";
 import { loadMarkdownDirectory } from "@/utilities/markdown";
 import { generateTags } from "@/utilities/metadata";
+import { ScrollToHash } from "@/components/ScrollToHash";
 import { Metadata } from "next";
 import React from "react";
 
@@ -36,6 +37,7 @@ export default async function ProjectsPage() {
 
   return (
     <main>
+      <ScrollToHash />
       <BentoGrid>
         {projectsByTitle.get(fullWidthFeaturedTitles[0]) && (
           <Project

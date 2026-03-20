@@ -19,6 +19,13 @@ export function Project({
   const [language] = useLanguage();
   const showZh = language === "zh";
 
+  // Used for deep-link scrolling from the homepage.
+  // Example: project.path="/projects/cloud-config" -> "cloud-config"
+  const anchorId =
+    typeof project.path === "string"
+      ? project.path.replace(/^\/projects\//, "")
+      : project.title;
+
   // Render both language lists and toggle with `opacity` for smooth switching.
   const highlightsZh = project.highlightsZh ?? project.highlights ?? [];
   const highlightsEn = project.highlightsEn ?? project.highlights ?? [];
@@ -34,6 +41,7 @@ export function Project({
   return (
     <BentoItem
       {...bentoProperties}
+      id={anchorId}
       className={twMerge(className, "justify-start")}
     >
       {children}
