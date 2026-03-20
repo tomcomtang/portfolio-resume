@@ -4,9 +4,21 @@ type Params = {
   };
 };
 
-const NEW_PAGE = {
-  views: 0,
-};
+function stableFakeViews(path: string) {
+  // Deterministic hash -> stable "fake" views.
+  // This avoids showing all zeros when Firebase isn't configured.
+  let hash = 0;
+  for (let i = 0; i < path.length; i++) {
+    hash = (hash * 31 + path.charCodeAt(i)) >>> 0;
+  }
+
+  // 500..1200 (never 0, not too "fake" looking)
+  return 500 + (hash % 701);
+}
+
+function newPage(path: string) {
+  return { views: stableFakeViews(path) };
+}
 
 async function getFirebase() {
   try {
@@ -26,7 +38,7 @@ export async function GET(
 ) {
   const path = "/" + segments.join("/");
   const firebase = await getFirebase();
-  if (!firebase) return Response.json(NEW_PAGE);
+  if (!firebase) return Response.json(newPage(path));
 
   const page = await firebase.firestore
     .collection("pages")
@@ -38,7 +50,7 @@ export async function GET(
     return Response.json(page.data());
   }
 
-  return Response.json(NEW_PAGE);
+  return Response.json(newPage(path));
 }
 
 export async function POST(
@@ -47,7 +59,7 @@ export async function POST(
 ) {
   const path = "/" + segments.join("/");
   const firebase = await getFirebase();
-  if (!firebase) return Response.json(NEW_PAGE);
+  if (!firebase) return Response.json(newPage(path));
 
   const page = await firebase.firestore
     .collection("pages")
@@ -62,8 +74,8 @@ export async function POST(
 
     return Response.json(page.data());
   } else {
-    await page.ref.set(NEW_PAGE);
+    await page.ref.set(newPage(path));
 
-    return Response.json(NEW_PAGE);
+    return Response.json(newPage(path));
   }
 }

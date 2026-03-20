@@ -40,6 +40,9 @@ export function ArticleHeader({
       <Heading1>{titleText}</Heading1>
       <div className="flex -mt-6 mb-8">
         <ViewCounter className="flex items-center">
+          <span className="mr-3 text-sm text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">
+            {showZh ? "发布日期：" : "Published:"} {metadata.date}
+          </span>
           <EyeIcon className="inline w-6 h-6 mr-2 -my-2" aria-hidden="true" />
         </ViewCounter>
       </div>

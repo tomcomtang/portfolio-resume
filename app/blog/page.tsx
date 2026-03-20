@@ -12,7 +12,16 @@ export const metadata: Metadata = generateTags({
 });
 
 export default async function ArticlesPage() {
-  const articles = await loadMarkdownDirectory("/blog");
+  const articles = (await loadMarkdownDirectory("/blog")).sort((a, b) => {
+    const timeA = new Date(a.metadata.date).getTime();
+    const timeB = new Date(b.metadata.date).getTime();
+
+    const safeTimeA = Number.isFinite(timeA) ? timeA : 0;
+    const safeTimeB = Number.isFinite(timeB) ? timeB : 0;
+
+    // Latest -> oldest
+    return safeTimeB - safeTimeA;
+  });
 
   return (
     <main>

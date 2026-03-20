@@ -35,7 +35,7 @@ export function Article({
       className={twMerge("md:flex-row flex-wrap justify-between", className)}
       {...properties}
     >
-      <Heading2 className="flex-grow relative mb-4">
+      <Heading2 className="flex-grow relative mb-4 z-20">
         <Link href={metadata.path}>
           {titleText}
           <span className="absolute inset-0" />
@@ -45,6 +45,9 @@ export function Article({
         path={metadata.path}
         className="self-start flex items-center mb-2"
       >
+        <span className="mr-3 text-sm text-slate-600 dark:text-slate-300 font-medium whitespace-nowrap">
+          {showZh ? "发布日期：" : "Published:"} {metadata.date}
+        </span>
         <EyeIcon className="inline w-6 h-6 mr-2 -my-2" aria-hidden="true" />
       </ViewCounter>
       <Paragraph className="w-full flex-shrink-0 mt-4">

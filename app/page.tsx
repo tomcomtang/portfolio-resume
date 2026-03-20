@@ -91,8 +91,14 @@ export default async function Home() {
           className="order-2 sm:col-span-3 md:col-span-2 sm:row-span-3 bg-slate-800"
           inset
         >
-          <Heading2 className="text-center sm:text-left sm:[writing-mode:vertical-lr] sm:rotate-180 sm:p-0 sm:text-6xl text-slate-50">
-            From the blog
+          <Heading2
+            link
+            className="text-center sm:text-left sm:[writing-mode:vertical-lr] sm:rotate-180 sm:p-0 sm:text-6xl text-slate-50"
+          >
+            <Link href="/blog">
+              From the blog
+              <span className="absolute inset-0" />
+            </Link>
           </Heading2>
         </BentoItem>
         {latestArticles.map((article) => (
@@ -111,17 +117,18 @@ export default async function Home() {
                 </div>
               </div>
               <blockquote className="text-xl sm:text-2xl flex-grow max-w-xl font-light">
-                Greg is a rare breed of developer that can work across the full
-                stack and is a genuine joy to work with. We&rsquo;re lucky to
-                have him leading our development at Myles.
+                He is a full-stack developer and front-end architect with a wide
+                range of skills—from building reliable product systems to
+                designing 3D scene experiences and delivering real-time
+                collaboration. His working style is calm, proactive, and quality-driven.
               </blockquote>
             </div>
             <div className="flex-shrink-0 md:ml-16">
               <p className="mt-12 md:mt-0 md:text-right text-4xl/tight sm:text-5xl/tight font-display font-bold tracking-wide uppercase">
-                Toby Cannon
+                Mr. Li
               </p>
               <p className="mt-4 md:text-right md:text-lg">
-                CEO, Myles Wellbeing
+                Head, Fifth Dept., Tencent Cloud
               </p>
             </div>
           </div>

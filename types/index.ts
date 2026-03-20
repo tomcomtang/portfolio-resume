@@ -5,6 +5,12 @@ export type ArticleMetadata = {
   description: string;
   descriptionZh?: string;
   /**
+   * Optional "heat"/priority label for blog/project cards.
+   * Used for bilingual UI, depending on `useLanguage()` showZh flag.
+   */
+  heatZh?: string;
+  heatEn?: string;
+  /**
    * Extra highlights rendered under `description` on the Projects list.
    * Used for "具体详情/包含部分" style content.
    */
