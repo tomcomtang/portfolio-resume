@@ -20,9 +20,9 @@ const display = Big_Shoulders_Display({
   variable: "--font-display",
 });
 
-const title = "Greg Ives";
+const title = "Childtom";
 const description =
-  "Greg Ives is a software engineer, currently leading the development of Myles Wellbeing.";
+  "Childtom is a software engineer. Building and shipping full-stack products with a focus on quality and real-world collaboration.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_ORIGIN),
@@ -83,10 +83,13 @@ export default function RootLayout({
       </head>
       <body className="h-full text-slate-900 dark:text-slate-100">
         <Header className="text-slate-100 sticky top-0" />
-        <Container className="min-h-[calc(100%-11rem)] grid relative z-10 p-2 bg-slate-700 dark:bg-slate-900 shadow-2xl shadow-slate-950 rounded-[2rem]">
+        <Container className="min-h-[calc(100%-12rem)] sm:min-h-[calc(100%-11rem)] grid relative z-10 p-2 bg-slate-700 dark:bg-slate-900 shadow-2xl shadow-slate-950 rounded-[2rem]">
           {children}
         </Container>
-        <Footer className="text-slate-100 sticky bottom-0" />
+        {/* Sticky footer on desktop only.
+            On mobile it stays in normal flow to avoid overlapping the last Bento card.
+            Extra top margin prevents the footer background from creeping upwards on some mobile browsers. */}
+        <Footer className="text-slate-100 sm:sticky bottom-0" />
         <Script id="animate">
           {'document.documentElement.dataset.animate = "true";'}
         </Script>

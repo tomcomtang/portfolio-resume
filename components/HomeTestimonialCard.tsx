@@ -42,7 +42,7 @@ export function HomeTestimonialCard() {
   const sig = {
     enName: "Mr. Li",
     zhName: "李先生",
-    enTitle: "Head, Fifth Dept., Tencent Cloud",
+    enTitle: "Leader, Fifth Dept., Tencent Cloud",
     zhTitle: "腾讯云五部管理者",
   } as const;
 

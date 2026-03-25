@@ -19,7 +19,7 @@ export function generateTags({
       title,
       description,
       url,
-      siteName: "Greg Ives",
+      siteName: "Childtom",
       images: [
         {
           url: `/opengraph?title=${title}&description=${description}`,
